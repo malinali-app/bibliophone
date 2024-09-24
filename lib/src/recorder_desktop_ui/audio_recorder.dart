@@ -43,6 +43,7 @@ class _AudioRecorderViewState extends State<AudioRecorderView> {
 
   Future<void> _start() async {
     try {
+      print(await _audioRecorder.hasPermission());
       if (await _audioRecorder.hasPermission()) {
         const encoder = AudioEncoder.wav;
 

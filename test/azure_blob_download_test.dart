@@ -4,8 +4,6 @@ import 'package:vocal_message/src/azure_blob/azblob_abstract.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 
-import 'secret.dart';
-
 class UtilsTestFiles {
   static const testFolderPath = 'test/done_test';
 
@@ -23,7 +21,7 @@ void main() {
     await UtilsTestFiles.cleanTestFolder();
     await UtilsTestFiles.createTestFolder();
     final client = http.Client();
-    AzureBlobAbstract.setConnectionString(azureConn);
+    AzureBlobAbstract.setConnectionString('testAzureConnString');
 
     final audioContent = await AzureBlobAbstract.downloadAudioFromAzure(
         '/audio-test/test@weebi.com_macos_MacBook de mac/loaded_by_admin/Phoniks_Message to Earth.mp3',

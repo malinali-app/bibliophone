@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:vocal_message/src/b_record_frame_permission.dart';
+import 'package:vocal_message/src/b_record_permission.dart';
 import 'package:vocal_message/src/messages/audio_list.dart';
 import 'package:vocal_message/src/messages/audio_state.dart';
 import 'package:vocal_message/src/globals.dart';
@@ -175,7 +175,7 @@ class _VocalMessagesAndRecorderViewState
               height: 8,
             ),
             const SizedBox(height: 12),
-            const RecorderFrame(),
+            const RecorderPermission(),
           ],
         ),
       ),

@@ -49,3 +49,4 @@ pubspec.lock
 example/pubspec.lock
 test/secret.dart
 example/lib/secret.dart
+example/macos/Podfile.lock

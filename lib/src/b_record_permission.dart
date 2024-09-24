@@ -7,19 +7,23 @@ import 'package:flutter/material.dart';
 
 import 'recorder_desktop_ui/desktop_frame.dart';
 
+/// not available
 Future<bool> checkPermission() async {
-  const Permission permissionMic = Permission.microphone;
-  final status = await permissionMic.status;
-  if (status != PermissionStatus.granted) {
-    final newStatus = await permissionMic.request();
-    return newStatus == PermissionStatus.granted;
-  } else {
-    return true;
+  if (Platform.isIOS || Platform.isAndroid || Platform.isWindows) {
+    const Permission permissionMic = Permission.microphone;
+    final status = await permissionMic.status;
+    if (status != PermissionStatus.granted) {
+      final newStatus = await permissionMic.request();
+      return newStatus == PermissionStatus.granted;
+    } else {
+      return true;
+    }
   }
+  return true;
 }
 
-class RecorderFrame extends StatelessWidget {
-  const RecorderFrame({Key? key}) : super(key: key);
+class RecorderPermission extends StatelessWidget {
+  const RecorderPermission({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
