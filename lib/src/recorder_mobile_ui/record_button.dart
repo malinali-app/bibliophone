@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:vocal_message/src/azure_blob/azblob_abstract.dart';
-import 'package:vocal_message/src/file_status.dart';
+import '../azure_blob/azblob_abstract.dart';
+import '../file_status.dart';
 import 'package:path/path.dart' as p;
-import 'package:vocal_message/src/messages/audio_state.dart';
-import 'package:vocal_message/src/globals.dart';
-import 'package:vocal_message/src/recorder_mobile_ui/flow_shader.dart';
-import 'package:vocal_message/src/recorder_mobile_ui/lottie_animation.dart';
+import '../messages/audio_state.dart';
+import '../globals.dart';
+import 'flow_shader.dart';
+import 'lottie_animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';

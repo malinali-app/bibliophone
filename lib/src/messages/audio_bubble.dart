@@ -1,12 +1,13 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
-import 'package:vocal_message/logic.dart';
-import 'package:vocal_message/src/azure_blob/azblob_abstract.dart';
+
+import '../../logic.dart';
+import '../azure_blob/azblob_abstract.dart';
 
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:http/http.dart' as http;
+import 'text_bubble.dart';
 
 class AudioBubble<F extends FileSyncStatus> extends StatelessWidget {
   final F fileSyncStatus;
@@ -22,7 +23,7 @@ class AudioBubble<F extends FileSyncStatus> extends StatelessWidget {
             SizedBox(width: MediaQuery.of(context).size.width * 0.2),
           Expanded(
             child: Container(
-              height: 52,
+              //height: 52,
               padding: const EdgeInsets.only(left: 10, right: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(
@@ -32,7 +33,9 @@ class AudioBubble<F extends FileSyncStatus> extends StatelessWidget {
                     : Colors.blueGrey[900],
               ),
               child: fileSyncStatus is MyFileStatus ? AudioBubbleWidgetUserSent(
-                  fileSyncStatus as MyFileStatus) : TextBubbleWidget()
+                  fileSyncStatus as MyFileStatus) : 
+                  // synthesis here
+                  TextBubbleWidget(fileSyncStatus)
             ),
           ),
           if (fileSyncStatus is TheirFileStatus)
@@ -43,14 +46,15 @@ class AudioBubble<F extends FileSyncStatus> extends StatelessWidget {
   }
 }
 
-class TextBubbleWidget extends StatelessWidget {
-  const TextBubbleWidget({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container();
+  String prettyAzureLength(int contentLength) {
+    debugPrint('contentLength $contentLength');
+    final megaBytes = (contentLength * 0.000001);
+    num fac = pow(10, 2);
+    final d = (megaBytes * fac).round() / fac;
+
+    return '$d Mo';
   }
-}
 
 
 // ignore: must_be_immutable
@@ -70,8 +74,6 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidgetUserSent> {
   @override
   void initState() {
     super.initState();
-    print('widget.fileSyncStatus.status');
-    print(widget.fileSyncStatus.status);
       player.setFilePath(widget.fileSyncStatus.filePath).then((value) {
         if (mounted) {
           setState(() => duration = value);
@@ -85,14 +87,6 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidgetUserSent> {
     return min + ":" + sec;
   }
 
-  String prettyAzureLength(int contentLength) {
-    debugPrint('contentLength $contentLength');
-    final megaBytes = (contentLength * 0.000001);
-    num fac = pow(10, 2);
-    final d = (megaBytes * fac).round() / fac;
-
-    return '$d Mo';
-  }
 
 
 
@@ -131,6 +125,7 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidgetUserSent> {
           children: [
             if (widget.fileSyncStatus.status == SyncStatus.localDefective)
               const Icon(Icons.broken_image, color: Colors.red)
+              // display the relevant icon button
              else if (widget.fileSyncStatus.status != SyncStatus.localDefective)
               StreamBuilder<PlayerState>(
                 stream: player.playerStateStream,
@@ -165,6 +160,7 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidgetUserSent> {
                 },
               ),
             const SizedBox(width: 6),
+              // display the progress bar (duration animation not working)
               Expanded(
                 child: StreamBuilder<Duration>(
                   stream: player.positionStream,
@@ -208,11 +204,15 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidgetUserSent> {
                   },
                 ),
               ),
+
+            // end of the bubble
+            // display upload icon if not found in azure or if uploading a progressIndicator
             if (widget.fileSyncStatus.status == SyncStatus.localNotSynced)
               IconButton(
                 icon: const Icon(Icons.upload, color: Colors.lightBlueAccent),
                 onPressed: () async => upload(),
               ),
+              
             if (widget.fileSyncStatus.status == SyncStatus.localSyncing)
               GestureDetector(
                 onTap: () {
@@ -235,6 +235,19 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidgetUserSent> {
         ),
         // not working yet
         // AmplitudeWidget(true, player, widget.filepath),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(height: 20, child: Row(
+            children: [
+                  TextButton.icon(onPressed: () {
+                  }, label: const Text('lorem'), icon: const Icon(Icons.edit),
+                  ),
+                  TextButton.icon(onPressed: () {
+                  }, label: const Text('ipsum'), icon: const Icon(Icons.edit),
+                  ),
+            ],
+          ),),
+        )
       ],
     );
   }

@@ -1,7 +1,7 @@
 // ignore: file_names
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:vocal_message/src/recorder_mobile_ui/record_button.dart';
+import 'recorder_mobile_ui/record_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:vocal_message/src/azure_blob/azblob_config.dart';
+import 'azure_blob/azblob_config.dart';
 
 extension LocalPathDownloadedFile on String {
   String get localPathFull =>

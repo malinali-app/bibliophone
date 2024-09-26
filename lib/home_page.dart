@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vocal_message/home.dart';
-import 'package:vocal_message/logic.dart';
+import 'package:voc_up/home.dart';
+import 'package:voc_up/logic.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

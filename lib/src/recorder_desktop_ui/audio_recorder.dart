@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:vocal_message/src/globals.dart';
+import '../globals.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;

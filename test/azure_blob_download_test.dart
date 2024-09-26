@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:vocal_message/src/azure_blob/azblob_abstract.dart';
+import '../lib/src/azure_blob/azblob_abstract.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 

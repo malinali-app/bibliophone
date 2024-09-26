@@ -1,6 +1,7 @@
-name: vocal_message
-description: record vocals, upload them on azure blob and download replies
-version: 0.0.5
+name: voc_up
+description: Showing how to use vocal_message package
+publish_to: 'none'
+version: 0.1.0
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -9,6 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  path_provider: ^2.1.3
+  intl: ^0.19.0
+  sherpa_onnx: ^1.10.27
   permission_handler: ^11.3.0 
   just_audio: ^0.9.40 #0.9.31 #^0.9.31  #0.9.11     ^0.9.37 Command CompileSwiftSources failed with a nonzero exit code
   just_audio_windows: any
@@ -28,4 +32,11 @@ dev_dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_lints: ^1.0.0 
+  flutter_lints: ^1.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/dustbin.json
+    - assets/dustbin_grey.json
+    #- assets/sherpa-onnx-streaming-zipformer-fr-2023-04-14/

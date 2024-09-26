@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:vocal_message/src/azure_blob/audio_file_parser.dart';
-import 'package:vocal_message/src/azure_blob/azblob_base.dart';
+import 'audio_file_parser.dart';
+import 'azblob_base.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class AzureBlobAbstract {
@@ -70,6 +70,28 @@ abstract class AzureBlobAbstract {
         debugPrint(e.toString());
       }
       return false;
+    }
+  }
+
+  // TODO downloadText
+    static Future<Uint8List> downloadText(
+      String wavFileLink, http.Client client) async {
+    final storage = AzureStorage.parse(_connectionString);
+
+    try {
+      final streamedResponse = await storage.getBlob(wavFileLink, client);
+      //await for await streamedResponse.stream.last
+      // final d = await streamedResponse.stream.toBytes();
+      // print('d.elementSizeInBytes ${d.elementSizeInBytes}');
+      //streamedResponse.stream.toBytes();
+      final response = await http.Response.fromStream(streamedResponse);
+      return response.bodyBytes;
+    } on AzureStorageException catch (ex) {
+      debugPrint('AzureStorageException ${ex.message}');
+      return Uint8List.fromList([]);
+    } on http.ClientException {
+      // catch Connection closed while receiving data
+      return Uint8List.fromList([]);
     }
   }
 

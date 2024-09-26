@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:vocal_message/src/globals.dart';
+import 'globals.dart';
 
 enum SyncStatus {
   remoteNotSynced,

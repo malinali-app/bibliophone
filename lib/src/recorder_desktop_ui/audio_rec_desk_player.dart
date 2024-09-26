@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:vocal_message/src/file_status.dart';
-import 'package:vocal_message/src/messages/audio_state.dart';
-import 'package:vocal_message/src/azure_blob/azblob_abstract.dart';
-import 'package:vocal_message/src/globals.dart';
+import '../file_status.dart';
+import '../messages/audio_state.dart';
+import '../azure_blob/azblob_abstract.dart';
+import '../globals.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

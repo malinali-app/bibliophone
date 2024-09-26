@@ -5,10 +5,10 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:vocal_message/src/b_record_permission.dart';
-import 'package:vocal_message/src/messages/audio_list.dart';
-import 'package:vocal_message/src/messages/audio_state.dart';
-import 'package:vocal_message/src/globals.dart';
+import 'b_record_permission.dart';
+import 'messages/audio_list.dart';
+import 'messages/audio_state.dart';
+import 'globals.dart';
 import 'package:flutter/material.dart';
 
 class VocalMessagesAndRecorderView extends StatefulWidget {

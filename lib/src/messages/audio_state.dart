@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:vocal_message/src/azure_blob/audio_file_parser.dart';
-import 'package:vocal_message/src/azure_blob/azblob_abstract.dart';
-import 'package:vocal_message/src/globals.dart';
-import 'package:vocal_message/src/file_status.dart';
+import '../azure_blob/audio_file_parser.dart';
+import '../azure_blob/azblob_abstract.dart';
+import '../globals.dart';
+import '../file_status.dart';
 import 'package:flutter/foundation.dart';
 
 /// Choosing this method because using proper state management would be an
