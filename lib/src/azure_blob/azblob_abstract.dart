@@ -10,17 +10,20 @@ abstract class AzureBlobAbstract {
     _connectionString = val;
   }
 
-  static Future<List<AzureAudioFileParser>> fetchRemoteAudioFilesInfo(
+  static Future<List<AzureAudioFileParser>> fetchAudioFilesInfo(
       String folderPath, http.Client client) async {
     if (_connectionString.isEmpty) {
       debugPrint('Azure _connectionString isEmpty');
       return [];
     }
+    print('folderPath $folderPath');
     final storage = AzureStorage.parse(_connectionString);
 
     try {
       final blobs = await storage.listBlobsRaw(folderPath, client);
       final response = await blobs.stream.bytesToString();
+      print('azure response');
+      print(response); 
       final azureFiles = AzureAudioFileParser.parseXml(response);
       return azureFiles.toList();
     } on AzureStorageException catch (ex) {
@@ -29,7 +32,7 @@ abstract class AzureBlobAbstract {
     }
   }
 
-  static Future<Uint8List> downloadAudioFromAzure(
+  static Future<Uint8List> downloadAudio(
       String wavFileLink, http.Client client) async {
     final storage = AzureStorage.parse(_connectionString);
 
@@ -50,7 +53,7 @@ abstract class AzureBlobAbstract {
     }
   }
 
-  static Future<bool> uploadAudioWavToAzure(
+  static Future<bool> uploadAudioWav(
       String filePath, String azureFolderFullPath, http.Client client) async {
     try {
       Uint8List content = await File(filePath).readAsBytes();
@@ -59,18 +62,18 @@ abstract class AzureBlobAbstract {
           bodyBytes: content, contentType: 'audio/wav');
       return isDone;
     } on AzureStorageException catch (ex) {
-      print('AzureStorageException ${ex.message}');
+      debugPrint('AzureStorageException ${ex.message}');
       return false;
     } on http.ClientException catch (e) {
       if (e.message.contains('Connection closed while receiving data') ==
           false) {
-        print(e.toString());
+        debugPrint(e.toString());
       }
       return false;
     }
   }
 
-  static Future<bool> uploadJsonToAzure(
+  static Future<bool> uploadJson(
       String text, String azureFolderFullPath, http.Client client) async {
     final storage = AzureStorage.parse(_connectionString);
     try {

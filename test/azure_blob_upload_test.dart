@@ -7,7 +7,7 @@ void main() {
     final client = http.Client();
     AzureBlobAbstract.setConnectionString('');
 
-    final dd = await AzureBlobAbstract.uploadAudioWavToAzure(
+    final dd = await AzureBlobAbstract.uploadAudioWav(
         'test/audio2.wav', '/audio-test/test/audio2.wav', client);
     expect(dd, isTrue);
   });

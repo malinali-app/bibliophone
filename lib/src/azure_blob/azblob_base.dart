@@ -2,7 +2,6 @@ library az_blob;
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -64,7 +63,8 @@ class AzureStorage {
     return config.toString();
   }
 
-  Uri uri({required String path , Map<String, String>? queryParameters}) {
+// keep '/' for azure path do not replace with Platform.pathSeparator
+  Uri uri({String path = '/', Map<String, String>? queryParameters}) {
     var scheme = config[defaultEndpointsProtocol] ?? 'https';
     var suffix = config[endpointSuffix] ?? 'core.windows.net';
     var name = config[accountName];
@@ -122,8 +122,8 @@ class AzureStorage {
 
   List<String?> _splitPathSegment(String path) {
     final twoStupidString = <String?>[];
-    final p = path.startsWith(Platform.pathSeparator) ? path.substring(1) : path;
-    final i = p.indexOf(Platform.pathSeparator);
+    final p = path.startsWith('/') ? path.substring(1) : path;
+    final i = p.indexOf('/');
     if (i < 0 || p.length < i + 2) {
       twoStupidString.add(p);
       twoStupidString.add(null);

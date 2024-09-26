@@ -6,7 +6,7 @@ void main() {
   test('fileStatus', () async {
     final client = http.Client();
     AzureBlobAbstract.setConnectionString('');
-    final files = await AzureBlobAbstract.fetchRemoteAudioFilesInfo(
+    final files = await AzureBlobAbstract.fetchAudioFilesInfo(
         '/audio-test/test', client);
     files.first.path;
   });

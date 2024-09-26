@@ -23,8 +23,8 @@ void main() {
     final client = http.Client();
     AzureBlobAbstract.setConnectionString('testAzureConnString');
 
-    final audioContent = await AzureBlobAbstract.downloadAudioFromAzure(
-        '/audio-test/test@weebi.com_macos_MacBook de mac/loaded_by_admin/Phoniks_Message to Earth.mp3',
+    final audioContent = await AzureBlobAbstract.downloadAudio(
+        '/audio-test/test@macos_MacBook de mac/loaded_by_admin/Phoniks_Message to Earth.mp3',
         client);
 
     final fileSaved = await File(

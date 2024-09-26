@@ -345,7 +345,7 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
               .add(MyFileStatus(SyncStatus.localSyncing, filePath));
           VocalMessagesConfig.audioListKey.currentState!
               .insertItem(AudioState.allAudioFiles.all.length - 1);
-          final dd = await AzureBlobAbstract.uploadAudioWavToAzure(
+          final dd = await AzureBlobAbstract.uploadAudioWav(
               filePath,
               VocalMessagesConfig.config.myFilesPath + Platform.pathSeparator + filePath.nameOnly,
               VocalMessagesConfig.client);
@@ -482,7 +482,7 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
               .add(MyFileStatus(SyncStatus.localSyncing, filePath));
           VocalMessagesConfig.audioListKey.currentState!
               .insertItem(AudioState.allAudioFiles.all.length - 1);
-          final dd = await AzureBlobAbstract.uploadAudioWavToAzure(
+          final dd = await AzureBlobAbstract.uploadAudioWav(
               filePath,
               VocalMessagesConfig.config.myFilesPath + Platform.pathSeparator + filePath.nameOnly,
               VocalMessagesConfig.client);

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:xml/xml.dart';
 
 extension Foo on Iterable<AzureAudioFileParser> {
@@ -18,8 +16,10 @@ class AzureAudioFileParser {
   final int contentLength;
   //Content-Encoding />
 //<Content-Language />
+
+// keep / for azure path 
   const AzureAudioFileParser(this.path, this.creationTime, this.contentLength);
-  String get fileName => path.split(Platform.pathSeparator).last;
+  String get fileName => path.split('/').last;
 
   static Iterable<AzureAudioFileParser> parseXml(String xml) {
     final filesAzure = <AzureAudioFileParser>[];

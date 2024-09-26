@@ -117,7 +117,7 @@ class AudioRecPlayerState extends State<AudioRecPlayer> {
                             .insertItem(
                                 AudioState.allAudioFiles.all.length - 1);
                       }
-                      final dd = await AzureBlobAbstract.uploadAudioWavToAzure(
+                      final dd = await AzureBlobAbstract.uploadAudioWav(
                           widget.source,
                           VocalMessagesConfig.config.myFilesPath +
                               Platform.pathSeparator +

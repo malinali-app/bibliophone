@@ -17,7 +17,7 @@ class AudioState {
 Future<List<AzureAudioFileParser>> fetchRemoteAudioFiles(
     String azurePath, http.Client client) async {
   final files =
-      await AzureBlobAbstract.fetchRemoteAudioFilesInfo(azurePath, client);
+      await AzureBlobAbstract.fetchAudioFilesInfo(azurePath, client);
   return files;
 }
 
@@ -71,8 +71,18 @@ Future<AllAudioFiles> fetchFilesAndSetStatus(String azurePath) async {
   final theirFiles = <TheirFileStatus>[];
   final myRemoteFiles = await fetchRemoteAudioFiles(
       VocalMessagesConfig.config.myFilesPath, client);
+
+
+  print(myRemoteFiles.length);
+  for(final remoteFilename in myRemoteFiles.filesNameOnly) {
+    print('remoteFilename');
+    print(remoteFilename);
+    }
   final myLocalFiles = getOnlyMyLocalAudioFiles();
   for (final localFile in myLocalFiles) {
+    print('localFile in myLocalFiles');
+    print(localFile);
+    print(localFile.nameOnly);
     if (myRemoteFiles.filesNameOnly.contains(localFile.nameOnly)) {
       // local file exists in azure
       final upFile = MyFileStatus(SyncStatus.synced, localFile);
