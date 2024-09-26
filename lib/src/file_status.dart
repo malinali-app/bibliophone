@@ -26,14 +26,14 @@ extension NamesOnlyOnLocalPath on Iterable<String> {
   List<String> get namesOnly {
     final fileNamesOnly = <String>[];
     for (final localFile in this) {
-      fileNamesOnly.add(localFile.split('/').last);
+      fileNamesOnly.add(localFile.split(Platform.pathSeparator).last);
     }
     return fileNamesOnly;
   }
 }
 
 extension NameOnlyOnLocalPath on String {
-  String get nameOnly => split('/').last;
+  String get nameOnly => split(Platform.pathSeparator).last;
 }
 
 class MyFileStatus implements FileSyncStatus {

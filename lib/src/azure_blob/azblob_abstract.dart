@@ -59,12 +59,12 @@ abstract class AzureBlobAbstract {
           bodyBytes: content, contentType: 'audio/wav');
       return isDone;
     } on AzureStorageException catch (ex) {
-      debugPrint('AzureStorageException ${ex.message}');
+      print('AzureStorageException ${ex.message}');
       return false;
     } on http.ClientException catch (e) {
       if (e.message.contains('Connection closed while receiving data') ==
           false) {
-        debugPrint(e.toString());
+        print(e.toString());
       }
       return false;
     }

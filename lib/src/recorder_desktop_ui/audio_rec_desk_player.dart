@@ -120,7 +120,7 @@ class AudioRecPlayerState extends State<AudioRecPlayer> {
                       final dd = await AzureBlobAbstract.uploadAudioWavToAzure(
                           widget.source,
                           VocalMessagesConfig.config.myFilesPath +
-                              '/' +
+                              Platform.pathSeparator +
                               widget.source.nameOnly,
                           VocalMessagesConfig.client);
                       if (dd == true) {

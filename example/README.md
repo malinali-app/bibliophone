@@ -1,3 +1,4 @@
 # voc_up
 
-A new Flutter project.
+create a secret.dart file and declare
+final azureBlobConnectionString = '',

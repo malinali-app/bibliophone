@@ -110,7 +110,7 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
     final uint8List = await AzureBlobAbstract.downloadAudioFromAzure(
         VocalMessagesConfig.config
                 .theirFilesPath + // only makes sense to download audio from someone else
-            '/' +
+            Platform.pathSeparator +
             widget.fileSyncStatus.filePath,
         VocalMessagesConfig.client);
 
@@ -130,7 +130,7 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
     final isUploadOk = await AzureBlobAbstract.uploadAudioWavToAzure(
         widget.fileSyncStatus.filePath,
         VocalMessagesConfig.config.myFilesPath +
-            '/' +
+            Platform.pathSeparator +
             widget.fileSyncStatus.filePath.nameOnly,
         VocalMessagesConfig.client);
     if (isUploadOk) {

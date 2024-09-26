@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:voc_up/home_page.dart';
+import 'package:voc_up/secret.dart';
 import 'package:voc_up/theme.dart';
 
 import 'package:vocal_message/azure_blob2.dart';
@@ -13,11 +14,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // pass azure connection string below
   // it looks like DefaultEndpointsProtocol=https;AccountName=...
-  AzureBlobAbstract.setConnectionString('azureConn');
+  AzureBlobAbstract.setConnectionString(azureBlobConnectionString);
 
   // set the container used in azure blob and the user folder
   VocalMessagesConfig.setAzureAudioConfig = AzureBlobConfig(
-      containerName: 'audio-test', userFolderName: 'vocup_test_user');
+      containerName: 'audio', userFolderName: 'test');
 
   runApp(const AppDocDirectory());
 }

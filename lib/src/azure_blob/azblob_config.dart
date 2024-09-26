@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class AzureBlobConfig {
   late String azureContainerName;
   late String azureUserFolderName;
@@ -14,10 +16,10 @@ class AzureBlobConfig {
     return _inst;
   }
 
-  String get rootPath => '/' + azureContainerName + '/' + azureUserFolderName;
+  String get rootPath => Platform.pathSeparator + azureContainerName + Platform.pathSeparator + azureUserFolderName;
   String get myFilesPath =>
-      '/' + azureContainerName + '/' + azureUserFolderName + '/sent_by_user';
+      Platform.pathSeparator + azureContainerName + Platform.pathSeparator + azureUserFolderName + Platform.pathSeparator + 'userSent';
 
   String get theirFilesPath =>
-      '/' + azureContainerName + '/' + azureUserFolderName + '/loaded_by_admin';
+      Platform.pathSeparator + azureContainerName + Platform.pathSeparator + azureUserFolderName + Platform.pathSeparator + 'mlCreated';
 }
