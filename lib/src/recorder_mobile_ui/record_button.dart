@@ -3,7 +3,7 @@ import 'dart:io';
 import '../azure_blob/azblob_abstract.dart';
 import '../file_status.dart';
 import 'package:path/path.dart' as p;
-import '../messages/audio_state.dart';
+import '../file_state.dart';
 import '../globals.dart';
 import 'flow_shader.dart';
 import 'lottie_animation.dart';
@@ -341,20 +341,22 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
             return;
           }
           VocalMessagesConfig.client = http.Client();
-          AudioState.allAudioFiles.myFiles
+          FileState.allAudioFiles.myFiles
               .add(MyFileStatus(SyncStatus.localSyncing, filePath));
           VocalMessagesConfig.audioListKey.currentState!
-              .insertItem(AudioState.allAudioFiles.all.length - 1);
+              .insertItem(FileState.allAudioFiles.all.length - 1);
           final dd = await AzureBlobAbstract.uploadAudioWav(
               filePath,
-              VocalMessagesConfig.config.myFilesPath + Platform.pathSeparator + filePath.nameOnly,
+              VocalMessagesConfig.config.myFilesPath +
+                  Platform.pathSeparator +
+                  filePath.nameOnly,
               VocalMessagesConfig.client);
           if (dd == true) {
             VocalMessagesConfig.client.close();
-            final index = AudioState.allAudioFiles.myFiles.indexWhere((e) =>
+            final index = FileState.allAudioFiles.myFiles.indexWhere((e) =>
                 e.uploadStatus == SyncStatus.localSyncing &&
                 e.filePath == filePath);
-            AudioState.allAudioFiles.myFiles[index] =
+            FileState.allAudioFiles.myFiles[index] =
                 MyFileStatus(SyncStatus.synced, filePath);
             VocalMessagesConfig.audioListKey.currentState!.setState(() {});
           }
@@ -478,20 +480,22 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
             return;
           }
           VocalMessagesConfig.client = http.Client();
-          AudioState.allAudioFiles.myFiles
+          FileState.allAudioFiles.myFiles
               .add(MyFileStatus(SyncStatus.localSyncing, filePath));
           VocalMessagesConfig.audioListKey.currentState!
-              .insertItem(AudioState.allAudioFiles.all.length - 1);
+              .insertItem(FileState.allAudioFiles.all.length - 1);
           final dd = await AzureBlobAbstract.uploadAudioWav(
               filePath,
-              VocalMessagesConfig.config.myFilesPath + Platform.pathSeparator + filePath.nameOnly,
+              VocalMessagesConfig.config.myFilesPath +
+                  Platform.pathSeparator +
+                  filePath.nameOnly,
               VocalMessagesConfig.client);
           if (dd == true) {
             VocalMessagesConfig.client.close();
-            final index = AudioState.allAudioFiles.myFiles.indexWhere((e) =>
+            final index = FileState.allAudioFiles.myFiles.indexWhere((e) =>
                 e.uploadStatus == SyncStatus.localSyncing &&
                 e.filePath == filePath);
-            AudioState.allAudioFiles.myFiles[index] =
+            FileState.allAudioFiles.myFiles[index] =
                 MyFileStatus(SyncStatus.synced, filePath);
             VocalMessagesConfig.audioListKey.currentState!.setState(() {});
           }

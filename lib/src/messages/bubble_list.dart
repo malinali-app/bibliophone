@@ -1,20 +1,20 @@
-import 'audio_state.dart';
+import '../file_state.dart';
 import '../globals.dart';
-import 'audio_bubble.dart';
+import 'bubble.dart';
 import 'package:flutter/material.dart';
 
-typedef FutureGenerator = Future<AllAudioFiles> Function();
+typedef FutureGenerator = Future<AllFiles> Function();
 
-class AudioList extends StatelessWidget {
+class BubbleList extends StatelessWidget {
   final bool isConnected;
   final FutureGenerator generator;
   // final Function onRerun;
-  const AudioList(this.isConnected, this.generator, {Key? key})
+  const BubbleList(this.isConnected, this.generator, {Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<AllAudioFiles>(
+    return FutureBuilder<AllFiles>(
         future: generator(),
         builder: (_, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
@@ -34,29 +34,29 @@ class AudioList extends StatelessWidget {
             return const ColoredBox(
                 color: Colors.blue, child: Text('audioFiles Fetch null'));
           } else {
-            AudioState.allAudioFiles = snap.data!;
-            return const AudioBubblesListWidget();
+            FileState.allAudioFiles = snap.data!;
+            return const BubblesListWidget();
           }
         });
   }
 }
 
-class AudioBubblesListWidget extends StatelessWidget {
+class BubblesListWidget extends StatelessWidget {
   // final Function onRerun;
-  const AudioBubblesListWidget({Key? key}) : super(key: key);
+  const BubblesListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedList(
-      initialItemCount: AudioState.allAudioFiles.all.length,
+      initialItemCount: FileState.allAudioFiles.all.length,
       padding: const EdgeInsets.symmetric(vertical: 15),
       key: VocalMessagesConfig.audioListKey,
       itemBuilder: (context, index, animation) {
         return FadeTransition(
           opacity: animation,
-          child: AudioBubble(
-            fileSyncStatus: AudioState.allAudioFiles.all[index],
-            key: ValueKey(AudioState.allAudioFiles.all[index]),
+          child: BubbleWidget(
+            fileSyncStatus: FileState.allAudioFiles.all[index],
+            key: ValueKey(FileState.allAudioFiles.all[index]),
           ),
         );
       },

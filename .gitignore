@@ -43,6 +43,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /web
-/linux
-/macos
 /lib/secret.dart
+example/build
+build

@@ -7,94 +7,44 @@ import '../azure_blob/azblob_abstract.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:http/http.dart' as http;
-import 'text_bubble.dart';
 
-class AudioBubble<F extends FileSyncStatus> extends StatelessWidget {
-  final F fileSyncStatus;
-  const AudioBubble({Key? key, required this.fileSyncStatus}) : super(key: key);
+String prettyAzureLength(int contentLength) {
+  debugPrint('contentLength $contentLength');
+  final megaBytes = (contentLength * 0.000001);
+  num fac = pow(10, 2);
+  final d = (megaBytes * fac).round() / fac;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          if (fileSyncStatus is MyFileStatus)
-            SizedBox(width: MediaQuery.of(context).size.width * 0.2),
-          Expanded(
-            child: Container(
-              //height: 52,
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                    VocalMessagesConfig.borderRadius - 10),
-                color: fileSyncStatus is MyFileStatus
-                    ? Colors.black
-                    : Colors.blueGrey[900],
-              ),
-              child: fileSyncStatus is MyFileStatus ? AudioBubbleWidgetUserSent(
-                  fileSyncStatus as MyFileStatus) : 
-                  // synthesis here
-                  TextBubbleWidget(fileSyncStatus)
-            ),
-          ),
-          if (fileSyncStatus is TheirFileStatus)
-            SizedBox(width: MediaQuery.of(context).size.width * 0.2),
-        ],
-      ),
-    );
-  }
+  return '$d Mo';
 }
-
-
-  String prettyAzureLength(int contentLength) {
-    debugPrint('contentLength $contentLength');
-    final megaBytes = (contentLength * 0.000001);
-    num fac = pow(10, 2);
-    final d = (megaBytes * fac).round() / fac;
-
-    return '$d Mo';
-  }
-
 
 // ignore: must_be_immutable
-class AudioBubbleWidgetUserSent<F extends FileSyncStatus> extends StatefulWidget {
+class AudioBubbleWidget extends StatefulWidget {
   MyFileStatus fileSyncStatus;
-  AudioBubbleWidgetUserSent(this.fileSyncStatus, {Key? key})
-      : super(key: key);
+  AudioBubbleWidget(this.fileSyncStatus, {Key? key}) : super(key: key);
 
   @override
-  State<AudioBubbleWidgetUserSent> createState() => _AudioBubbleWidgetState();
+  State<AudioBubbleWidget> createState() => _AudioBubbleWidgetState();
 }
 
-class _AudioBubbleWidgetState extends State<AudioBubbleWidgetUserSent> {
+class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
   final player = AudioPlayer();
   Duration? duration;
 
   @override
   void initState() {
     super.initState();
-      player.setFilePath(widget.fileSyncStatus.filePath).then((value) {
-        if (mounted) {
-          setState(() => duration = value);
-        }
-      });
+    player.setFilePath(widget.fileSyncStatus.filePath).then((value) {
+      if (mounted) {
+        setState(() => duration = value);
+      }
+    });
   }
-
-  String prettyDuration(Duration d) {
-    var min = d.inMinutes < 10 ? "0${d.inMinutes}" : d.inMinutes.toString();
-    var sec = d.inSeconds < 10 ? "0${d.inSeconds}" : d.inSeconds.toString();
-    return min + ":" + sec;
-  }
-
-
-
 
   Future<void> upload() async {
     VocalMessagesConfig.client = http.Client();
     setState(() {
-      widget.fileSyncStatus = widget.fileSyncStatus 
-          .copyWith(uploadStatus: SyncStatus.localSyncing);
+      widget.fileSyncStatus =
+          widget.fileSyncStatus.copyWith(uploadStatus: SyncStatus.localSyncing);
     });
     // keep '/' for azure path do not replace with Platform.pathSeparator
     final isUploadOk = await AzureBlobAbstract.uploadAudioWav(
@@ -105,8 +55,8 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidgetUserSent> {
         VocalMessagesConfig.client);
     if (isUploadOk) {
       setState(() {
-        widget.fileSyncStatus = widget.fileSyncStatus 
-            .copyWith(uploadStatus: SyncStatus.synced);
+        widget.fileSyncStatus =
+            widget.fileSyncStatus.copyWith(uploadStatus: SyncStatus.synced);
       });
       VocalMessagesConfig.client.close();
     }
@@ -115,140 +65,194 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidgetUserSent> {
 
   @override
   Widget build(BuildContext context) {
-    final dateString =
-        '${widget.fileSyncStatus.dateLastModif.year}/${widget.fileSyncStatus.dateLastModif.month}/${widget.fileSyncStatus.dateLastModif.day} ${widget.fileSyncStatus.dateLastModif.hour}:${widget.fileSyncStatus.dateLastModif.minute}';
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const SizedBox(height: 4),
-        Row(
-          children: [
-            if (widget.fileSyncStatus.status == SyncStatus.localDefective)
-              const Icon(Icons.broken_image, color: Colors.red)
-              // display the relevant icon button
-             else if (widget.fileSyncStatus.status != SyncStatus.localDefective)
-              StreamBuilder<PlayerState>(
-                stream: player.playerStateStream,
-                builder: (context, snapshot) {
-                  final playerState = snapshot.data;
-                  final processingState = playerState?.processingState;
-                  final playing = playerState?.playing;
-                  if (processingState == ProcessingState.loading ||
-                      processingState == ProcessingState.buffering) {
-                    return IconButton(
-                      icon: const Icon(Icons.play_arrow),
-                      onPressed: player.play,
-                    );
-                  } else if (playing != true) {
-                    return IconButton(
-                      icon: const Icon(Icons.play_arrow),
-                      onPressed: player.play,
-                    );
-                  } else if (processingState != ProcessingState.completed) {
-                    return IconButton(
-                      icon: const Icon(Icons.pause),
-                      onPressed: player.pause,
-                    );
-                  } else {
-                    return IconButton(
-                      icon: const Icon(Icons.replay),
-                      onPressed: () {
-                        player.seek(Duration.zero);
-                      },
-                    );
-                  }
-                },
-              ),
-            const SizedBox(width: 6),
-              // display the progress bar (duration animation not working)
-              Expanded(
-                child: StreamBuilder<Duration>(
-                  stream: player.positionStream,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                        children: [
-                          const SizedBox(height: 4),
-                          LinearProgressIndicator(
-                            value: snapshot.data!.inMilliseconds /
-                                (duration?.inMilliseconds ?? 1),
-                          ),
-                          const SizedBox(height: 6),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              if (duration != null)
-                                Text(
-                                  prettyDuration(snapshot.data! == Duration.zero
-                                      ? duration ?? Duration.zero
-                                      : snapshot.data!),
-                                  style: const TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              Text(
-                                dateString,
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    } else {
-                      return const LinearProgressIndicator();
-                    }
-                  },
-                ),
-              ),
-
-            // end of the bubble
-            // display upload icon if not found in azure or if uploading a progressIndicator
-            if (widget.fileSyncStatus.status == SyncStatus.localNotSynced)
-              IconButton(
-                icon: const Icon(Icons.upload, color: Colors.lightBlueAccent),
-                onPressed: () async => upload(),
-              ),
-              
-            if (widget.fileSyncStatus.status == SyncStatus.localSyncing)
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    widget.fileSyncStatus = widget.fileSyncStatus 
-                            .copyWith(uploadStatus: SyncStatus.localNotSynced);
-                  });
-                  VocalMessagesConfig.client.close();
-                  return;
-                },
-                child: const Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Icon(Icons.cancel),
-                    CircularProgressIndicator(),
-                  ],
-                ),
-              )
-          ],
-        ),
-        // not working yet
-        // AmplitudeWidget(true, player, widget.filepath),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SizedBox(height: 20, child: Row(
+    return (widget.fileSyncStatus.status == SyncStatus.localDefective)
+        ? const Icon(Icons.broken_image, color: Colors.red)
+        : Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-                  TextButton.icon(onPressed: () {
-                  }, label: const Text('lorem'), icon: const Icon(Icons.edit),
-                  ),
-                  TextButton.icon(onPressed: () {
-                  }, label: const Text('ipsum'), icon: const Icon(Icons.edit),
-                  ),
+              const SizedBox(height: 4),
+              PlayerWidget(
+                widget.fileSyncStatus.filePath,
+                widget.fileSyncStatus.dateString,
+                duration:duration,
+                syncStatus: widget.fileSyncStatus.status,
+              ),
+              syncIcon()
+              // not working yet
+              // AmplitudeWidget(true, player, widget.filepath),
             ],
-          ),),
-        )
+          );
+  }
+
+  Widget syncIcon() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if (widget.fileSyncStatus.status == SyncStatus.localNotSynced)
+            IconButton(
+              icon: const Icon(Icons.upload, color: Colors.lightBlueAccent),
+              onPressed: () async => upload(),
+            ),
+          if (widget.fileSyncStatus.status == SyncStatus.localSyncing)
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  widget.fileSyncStatus = widget.fileSyncStatus
+                      .copyWith(uploadStatus: SyncStatus.localNotSynced);
+                });
+                VocalMessagesConfig.client.close();
+                return;
+              },
+              child: const Stack(
+                alignment: Alignment.center,
+                children: [
+                  Icon(Icons.cancel),
+                  CircularProgressIndicator(),
+                ],
+              ),
+            )
+        ],
+      );
+}
+
+class PlayerWidget extends StatefulWidget {
+  final String filePath, dateString;
+  final Duration? duration;
+  final SyncStatus syncStatus;
+
+  const PlayerWidget(this.filePath, this.dateString,
+      {this.duration, this.syncStatus = SyncStatus.synced, super.key})
+      : assert(syncStatus != SyncStatus.localDefective &&
+            syncStatus != SyncStatus.localNotSynced &&
+            syncStatus != SyncStatus.localSyncing);
+
+  @override
+  State<PlayerWidget> createState() => _AudioBubbleRawWidget();
+}
+
+class _AudioBubbleRawWidget extends State<PlayerWidget> {
+  final player = AudioPlayer();
+  Duration? duration;
+
+  @override
+  void initState() {
+    super.initState();
+    player.setFilePath(widget.filePath).then((value) {
+      if (mounted) {
+        setState(() => duration = value);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const SizedBox(width: 6),
+        PlayerIcon(player),
+        PlayerProgressBar(player, widget.dateString, duration)
       ],
     );
   }
+}
+
+class PlayerIcon extends StatelessWidget {
+  final AudioPlayer player;
+  const PlayerIcon(this.player, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<PlayerState>(
+      stream: player.playerStateStream,
+      builder: (context, snapshot) {
+        final playerState = snapshot.data;
+        final processingState = playerState?.processingState;
+        final playing = playerState?.playing;
+        if (processingState == ProcessingState.loading ||
+            processingState == ProcessingState.buffering) {
+          return IconButton(
+            icon: const Icon(Icons.play_arrow),
+            onPressed: player.play,
+          );
+        } else if (playing != true) {
+          return IconButton(
+            icon: const Icon(Icons.play_arrow),
+            onPressed: player.play,
+          );
+        } else if (processingState != ProcessingState.completed) {
+          return IconButton(
+            icon: const Icon(Icons.pause),
+            onPressed: player.pause,
+          );
+        } else {
+          return IconButton(
+            icon: const Icon(Icons.replay),
+            onPressed: () {
+              player.seek(Duration.zero);
+            },
+          );
+        }
+      },
+    );
+  }
+}
+
+class PlayerProgressBar extends StatelessWidget {
+  final AudioPlayer player;
+  final String dateString;
+  final Duration? duration;
+  const PlayerProgressBar(this.player, this.dateString, this.duration,
+      {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: StreamBuilder<Duration>(
+        stream: player.positionStream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: [
+                const SizedBox(height: 4),
+                LinearProgressIndicator(
+                  value: snapshot.data!.inMilliseconds /
+                      (duration?.inMilliseconds ?? 1),
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (duration != null)
+                      Text(
+                        prettyDuration(snapshot.data! == Duration.zero
+                            ? duration ?? Duration.zero
+                            : snapshot.data!),
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    Text(
+                      dateString,
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          } else {
+            return const LinearProgressIndicator();
+          }
+        },
+      ),
+    );
+  }
+}
+
+String prettyDuration(Duration d) {
+  var min = d.inMinutes < 10 ? "0${d.inMinutes}" : d.inMinutes.toString();
+  var sec = d.inSeconds < 10 ? "0${d.inSeconds}" : d.inSeconds.toString();
+  return min + ":" + sec;
 }

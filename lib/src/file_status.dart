@@ -17,6 +17,8 @@ abstract class FileSyncStatus {
   const FileSyncStatus(this.status, this.filePath);
 
   DateTime get dateLastModif;
+  String get dateString =>
+      '${dateLastModif.year}/${dateLastModif.month}/${dateLastModif.day} ${dateLastModif.hour}:${dateLastModif.minute}';
 
   @override
   toString() => '$status, $filePath';
@@ -59,6 +61,10 @@ class MyFileStatus implements FileSyncStatus {
       localPath ?? this.localPath,
     );
   }
+
+  @override
+  String get dateString =>
+      '${dateLastModif.year}/${dateLastModif.month}/${dateLastModif.day} ${dateLastModif.hour}:${dateLastModif.minute}';
 }
 
 class TheirFileStatus implements FileSyncStatus {
@@ -67,6 +73,10 @@ class TheirFileStatus implements FileSyncStatus {
   final String azurePath;
   final DateTime? creationTime;
   final int bytes;
+
+  @override
+  String get dateString =>
+      '${dateLastModif.year}/${dateLastModif.month}/${dateLastModif.day} ${dateLastModif.hour}:${dateLastModif.minute}';
 
   TheirFileStatus(
       this.downloadStatus, this.azurePath, this.creationTime, this.bytes);

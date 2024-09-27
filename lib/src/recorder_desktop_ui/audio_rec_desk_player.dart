@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import '../file_status.dart';
-import '../messages/audio_state.dart';
+import '../file_state.dart';
 import '../azure_blob/azblob_abstract.dart';
 import '../globals.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -109,13 +109,12 @@ class AudioRecPlayerState extends State<AudioRecPlayer> {
                     icon: const Icon(Icons.upload, color: Colors.white),
                     onPressed: () async {
                       VocalMessagesConfig.client = http.Client();
-                      AudioState.allAudioFiles.myFiles.add(
+                      FileState.allAudioFiles.myFiles.add(
                           MyFileStatus(SyncStatus.localSyncing, widget.source));
                       if (VocalMessagesConfig.audioListKey.currentState !=
                           null) {
                         VocalMessagesConfig.audioListKey.currentState!
-                            .insertItem(
-                                AudioState.allAudioFiles.all.length - 1);
+                            .insertItem(FileState.allAudioFiles.all.length - 1);
                       }
                       final dd = await AzureBlobAbstract.uploadAudioWav(
                           widget.source,
@@ -125,11 +124,11 @@ class AudioRecPlayerState extends State<AudioRecPlayer> {
                           VocalMessagesConfig.client);
                       if (dd == true) {
                         VocalMessagesConfig.client.close();
-                        final index = AudioState.allAudioFiles.myFiles
+                        final index = FileState.allAudioFiles.myFiles
                             .indexWhere((e) =>
                                 e.uploadStatus == SyncStatus.localSyncing &&
                                 e.filePath == widget.source);
-                        AudioState.allAudioFiles.myFiles[index] =
+                        FileState.allAudioFiles.myFiles[index] =
                             MyFileStatus(SyncStatus.synced, widget.source);
                         VocalMessagesConfig.audioListKey.currentState!
                             .setState(() {});

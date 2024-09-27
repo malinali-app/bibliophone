@@ -6,8 +6,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'b_record_permission.dart';
-import 'messages/audio_list.dart';
-import 'messages/audio_state.dart';
+import 'messages/bubble_list.dart';
+import 'file_state.dart';
 import 'globals.dart';
 import 'package:flutter/material.dart';
 
@@ -164,7 +164,7 @@ class _VocalMessagesAndRecorderViewState
         child: Column(
           children: [
             Expanded(
-              child: AudioList(
+              child: BubbleList(
                 isDeviceConnected,
                 () async =>
                     getLocalAudioFetchFilesAndSetStatus(isDeviceConnected),

@@ -1,23 +1,22 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import '../azure_blob/audio_file_parser.dart';
-import '../azure_blob/azblob_abstract.dart';
-import '../globals.dart';
-import '../file_status.dart';
+import 'azure_blob/audio_file_parser.dart';
+import 'azure_blob/azblob_abstract.dart';
+import 'globals.dart';
+import 'file_status.dart';
 import 'package:flutter/foundation.dart';
 
 /// Choosing this method because using proper state management would be an
 /// overkill for the scope of this project.
-class AudioState {
-  const AudioState._();
+class FileState {
+  const FileState._();
   // ignore: prefer_const_constructors
-  static AllAudioFiles allAudioFiles = AllAudioFiles([], []);
+  static AllFiles allAudioFiles = AllFiles([], []);
 }
 
 Future<List<AzureAudioFileParser>> fetchRemoteAudioFiles(
     String azurePath, http.Client client) async {
-  final files =
-      await AzureBlobAbstract.fetchAudioFilesInfo(azurePath, client);
+  final files = await AzureBlobAbstract.fetchAudioFilesInfo(azurePath, client);
   return files;
 }
 
@@ -37,8 +36,7 @@ List<String> getOnlyTheirLocalAudioFiles() {
   return files.map((e) => e.path).toList();
 }
 
-Future<AllAudioFiles> getLocalAudioFetchFilesAndSetStatus(
-    bool isConnected) async {
+Future<AllFiles> getLocalAudioFetchFilesAndSetStatus(bool isConnected) async {
   if (isConnected) {
     final allAudios =
         await fetchFilesAndSetStatus(VocalMessagesConfig.config.rootPath);
@@ -48,7 +46,7 @@ Future<AllAudioFiles> getLocalAudioFetchFilesAndSetStatus(
   }
 }
 
-AllAudioFiles getLocalFilesAndStatusOnly() {
+AllFiles getLocalFilesAndStatusOnly() {
   final myFiles = <MyFileStatus>[];
   final theirFiles = <TheirFileStatus>[];
   final myLocalFiles = getOnlyMyLocalAudioFiles();
@@ -62,22 +60,21 @@ AllAudioFiles getLocalFilesAndStatusOnly() {
         SyncStatus.synced, filePath, File(filePath).lastModifiedSync(), 0);
     theirFiles.add(temp);
   }
-  return AllAudioFiles(myFiles, theirFiles);
+  return AllFiles(myFiles, theirFiles);
 }
 
-Future<AllAudioFiles> fetchFilesAndSetStatus(String azurePath) async {
+Future<AllFiles> fetchFilesAndSetStatus(String azurePath) async {
   final client = http.Client();
   final myFiles = <MyFileStatus>[];
   final theirFiles = <TheirFileStatus>[];
   final myRemoteFiles = await fetchRemoteAudioFiles(
       VocalMessagesConfig.config.myFilesPath, client);
 
-
   print(myRemoteFiles.length);
-  for(final remoteFilename in myRemoteFiles.filesNameOnly) {
+  for (final remoteFilename in myRemoteFiles.filesNameOnly) {
     print('remoteFilename');
     print(remoteFilename);
-    }
+  }
   final myLocalFiles = getOnlyMyLocalAudioFiles();
   for (final localFile in myLocalFiles) {
     print('localFile in myLocalFiles');
@@ -125,13 +122,13 @@ Future<AllAudioFiles> fetchFilesAndSetStatus(String azurePath) async {
     }
   }
   debugPrint('theirFiles ${theirFiles.length}');
-  return AllAudioFiles(myFiles, theirFiles);
+  return AllFiles(myFiles, theirFiles);
 }
 
-class AllAudioFiles {
+class AllFiles {
   final List<MyFileStatus> myFiles;
   final List<TheirFileStatus> theirFiles;
-  const AllAudioFiles(this.myFiles, this.theirFiles);
+  const AllFiles(this.myFiles, this.theirFiles);
 
   List<FileSyncStatus> get all => [...myFiles, ...theirFiles]
     ..sort((a, b) => a.dateLastModif.compareTo(b.dateLastModif));

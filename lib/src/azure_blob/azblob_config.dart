@@ -13,12 +13,12 @@ class AzureBlobConfig {
     _inst.azureUserFolderName = userFolderName;
     return _inst;
   }
-  
+
 // keep '/' for azure path do not replace with Platform.pathSeparator
   String get rootPath => '/' + azureContainerName + '/' + azureUserFolderName;
   String get myFilesPath =>
-      '/' + azureContainerName + '/' + azureUserFolderName + '/userSent';
+      '/' + azureContainerName + '/' + azureUserFolderName + '/userAudio';
 
   String get theirFilesPath =>
-      '/' + azureContainerName + '/' + azureUserFolderName + '/ml';
+      '/' + azureContainerName + '/' + azureUserFolderName + '/transcription';
 }
