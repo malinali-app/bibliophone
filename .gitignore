@@ -46,3 +46,4 @@ app.*.map.json
 /lib/secret.dart
 example/build
 build
+lib/src/secret.dart
