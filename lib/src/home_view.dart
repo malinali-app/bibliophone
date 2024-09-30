@@ -5,15 +5,15 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'b_record_permission.dart';
+import 'record_permission.dart';
 import 'messages/bubble_list.dart';
-import 'file_state.dart';
+import 'file/file_state.dart';
 import 'globals.dart';
 import 'package:flutter/material.dart';
 
 class VocalMessagesAndRecorderView extends StatefulWidget {
   final String title;
-  const VocalMessagesAndRecorderView(this.title, {Key? key}) : super(key: key);
+  const VocalMessagesAndRecorderView(this.title, {super.key});
 
   @override
   State<VocalMessagesAndRecorderView> createState() =>
@@ -31,8 +31,6 @@ class _VocalMessagesAndRecorderViewState
   @override
   void initState() {
     super.initState();
-    // You have set this otherwise it throws AppFolderNotSetException
-
     initConnectivity();
 
     _connectivitySubscription = _connectivity.onConnectivityChanged
@@ -105,7 +103,7 @@ class _VocalMessagesAndRecorderViewState
                   child: const Text('OK', overflow: TextOverflow.ellipsis),
                   style: ButtonStyle(
                     foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue),
+                        WidgetStateProperty.all<Color>(Colors.blue),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(true);
@@ -134,9 +132,9 @@ class _VocalMessagesAndRecorderViewState
                   context,
                   isDismissible: false);
               if (isSureToDelete) {
-                VocalMessagesConfig.theirFilesDir.deleteSync(recursive: false);
-                VocalMessagesConfig.myFilesDir.deleteSync(recursive: false);
-                Directory(VocalMessagesConfig.documentPath).createSync();
+                GlobalConfig.theirFilesDir.deleteSync(recursive: false);
+                GlobalConfig.myFilesDir.deleteSync(recursive: false);
+                Directory(GlobalConfig.documentPath).createSync();
                 setState(() {});
               }
             },
@@ -150,7 +148,10 @@ class _VocalMessagesAndRecorderViewState
             onPressed: isDeviceConnected
                 ? () async {
                     setState(() => isSyncing = true);
-                    await getLocalAudioFetchFilesAndSetStatus(isDeviceConnected)
+                    await getLocalAudioFetchFilesAndSetStatus(
+                            isConnected: isDeviceConnected,
+                            isConnexionString:
+                                GlobalConfig.connexionString.isNotEmpty)
                         .then(
                       (value) => setState(() => isSyncing = false),
                     );
@@ -160,14 +161,15 @@ class _VocalMessagesAndRecorderViewState
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(VocalMessagesConfig.defaultPadding),
+        padding: const EdgeInsets.all(GlobalConfig.defaultPadding),
         child: Column(
           children: [
             Expanded(
               child: BubbleList(
                 isDeviceConnected,
-                () async =>
-                    getLocalAudioFetchFilesAndSetStatus(isDeviceConnected),
+                () async => getLocalAudioFetchFilesAndSetStatus(
+                    isConnected: isDeviceConnected,
+                    isConnexionString: GlobalConfig.connexionString.isNotEmpty),
               ),
             ),
             Container(

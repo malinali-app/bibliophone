@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:re_editor/re_editor.dart';
-import 'package:voc_up/src/messages/audio_bubble.dart';
-import 'package:voc_up/src/transcription/find_panel_view.dart';
+import 'package:bernard/src/messages/audio_bubble.dart';
+import 'package:bernard/src/transcription/find_panel_view.dart';
 
 class TranscriptionView extends StatefulWidget {
   final String audioFilePath;

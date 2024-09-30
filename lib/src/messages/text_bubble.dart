@@ -1,16 +1,9 @@
-import 'dart:async';
 import 'dart:io';
-import 'dart:math';
-import 'dart:typed_data';
-
-import 'package:flutter/services.dart';
+import 'package:bernard/src/file/file_status.dart';
+import 'package:bernard/src/globals.dart';
 import 'package:go_router/go_router.dart';
-import 'package:voc_up/messages_ui.dart';
-import '../../logic.dart';
-import '../azure_blob/azblob_abstract.dart';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
 class TextBubbleWidget<F extends FileSyncStatus> extends StatefulWidget {
@@ -75,7 +68,7 @@ class _TextBubbleWidgetState extends State<TextBubbleWidget> {
                       ),
                     ],
                   ),
-                  Text('transcription : $text' + "\n..."),
+                  Text('transcription : $text\n...'),
                   TextButton.icon(
                     label: const Text('Synthétiser et partager'),
                     icon: const Icon(
@@ -129,7 +122,7 @@ class _TextBubbleWidgetState extends State<TextBubbleWidget> {
                               downloadStatus: SyncStatus.remoteNotSynced,
                             );
                           });
-                          VocalMessagesConfig.client.close();
+                          GlobalConfig.client.close();
                         },
                         child: const Stack(
                           alignment: Alignment.center,

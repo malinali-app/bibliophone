@@ -12,29 +12,13 @@ Upload vocal message for online transcription and summarization
 - Use github CI + secret
 - Add a backend project to conduct speech-to-text transcription on audio
 
-# set-up & documentation 
-## set-up flutter app
-create lib/src/secret.dart file and declare
-```dart
-const azureBlobConnectionString = '',
-```
-in _main.dart_ set with your own 
-```dart
-  VocalMessagesConfig.setAzureAudioConfig = AzureBlobConfig(
-      containerName: 'audio', userFolderName: 'test');
-```
-
-## set-up azure
+# set-up  
 - create azure blob
 - create container in azure blob
 - create azure blob key with add, read, list permission
 - azure permissions : set a role with blob contributor
-- azure file formats : only upload .wav audio file
-- azureFolderFullPath = container + folderPath + direction, ex : 
-	- /audio-test/userName/userAudio // where app-user's audios are saved
-	- /audio-test/userName/transcription // where admin should save vocal message replies (.wav)
-- tip download azure blob storage GUI : https://azure.microsoft.com/en-us/products/storage/storage-explorer/
-
+- network & security -> copy connexion string and share it to your device (e.g. mail, message) 
+- __in flutter app__ go to settings and paste the connexion string
 
 # caveat
 - only compatible with azure yet, but adaptable
@@ -68,7 +52,6 @@ in _main.dart_ set with your own
 - provide optionnal params to set in azure :
 	- <Content-Encoding />
 	- <Content-Language />
-
 
 
 # Dependencies
@@ -142,3 +125,18 @@ platform :osx, '10.15'
 <true/>
 <key>com.apple.security.files.downloads.read-write</key>
 <true/>
+
+
+# fork & custom
+
+Update below with your own info
+```dart
+  VocalMessagesConfig.setAzureAudioConfig = AzureBlobConfig(
+      containerName: 'myOwnContainer', userFolderName: 'myOwnUserName');
+```
+
+- azure file formats : only upload .wav audio file
+- azureFolderFullPath = container + folderPath + direction, ex : 
+	- /bernard/userName/userAudio // where app-user's audios are saved
+	- /bernard/userName/transcription // where admin should save vocal message replies (.wav)
+- tip download azure blob storage GUI : https://azure.microsoft.com/en-us/products/storage/storage-explorer/

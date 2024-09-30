@@ -1,14 +1,8 @@
-import 'dart:async';
-import 'dart:math';
-
-import 'package:voc_up/src/messages/audio_bubble.dart';
-
-import '../../logic.dart';
-import '../azure_blob/azblob_abstract.dart';
+import 'package:bernard/src/file/file_status.dart';
+import 'package:bernard/src/globals.dart';
+import 'package:bernard/src/messages/audio_bubble.dart';
 
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:http/http.dart' as http;
 import 'text_bubble.dart';
 
 class BubbleWidget<F extends FileSyncStatus> extends StatelessWidget {
@@ -29,8 +23,8 @@ class BubbleWidget<F extends FileSyncStatus> extends StatelessWidget {
                 //height: 52,
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                      VocalMessagesConfig.borderRadius - 10),
+                  borderRadius:
+                      BorderRadius.circular(GlobalConfig.borderRadius - 10),
                   color: fileSyncStatus is MyFileStatus
                       ? Colors.black
                       : Colors.blueGrey[900],

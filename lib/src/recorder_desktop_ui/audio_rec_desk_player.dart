@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import '../file_status.dart';
-import '../file_state.dart';
+import '../file/file_status.dart';
+import '../file/file_state.dart';
 import '../azure_blob/azblob_abstract.dart';
 import '../globals.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -108,30 +108,28 @@ class AudioRecPlayerState extends State<AudioRecPlayer> {
                   child: IconButton(
                     icon: const Icon(Icons.upload, color: Colors.white),
                     onPressed: () async {
-                      VocalMessagesConfig.client = http.Client();
+                      GlobalConfig.client = http.Client();
                       FileState.allAudioFiles.myFiles.add(
                           MyFileStatus(SyncStatus.localSyncing, widget.source));
-                      if (VocalMessagesConfig.audioListKey.currentState !=
-                          null) {
-                        VocalMessagesConfig.audioListKey.currentState!
+                      if (GlobalConfig.audioListKey.currentState != null) {
+                        GlobalConfig.audioListKey.currentState!
                             .insertItem(FileState.allAudioFiles.all.length - 1);
                       }
                       final dd = await AzureBlobAbstract.uploadAudioWav(
                           widget.source,
-                          VocalMessagesConfig.config.myFilesPath +
+                          GlobalConfig.config.myFilesPath +
                               Platform.pathSeparator +
                               widget.source.nameOnly,
-                          VocalMessagesConfig.client);
+                          GlobalConfig.client);
                       if (dd == true) {
-                        VocalMessagesConfig.client.close();
+                        GlobalConfig.client.close();
                         final index = FileState.allAudioFiles.myFiles
                             .indexWhere((e) =>
                                 e.uploadStatus == SyncStatus.localSyncing &&
                                 e.filePath == widget.source);
                         FileState.allAudioFiles.myFiles[index] =
                             MyFileStatus(SyncStatus.synced, widget.source);
-                        VocalMessagesConfig.audioListKey.currentState!
-                            .setState(() {});
+                        GlobalConfig.audioListKey.currentState!.setState(() {});
                       }
                       debugPrint(widget.source);
                       widget.onDoneOrDelete();

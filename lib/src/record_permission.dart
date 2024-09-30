@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'recorder_desktop_ui/desktop_frame.dart';
 
-/// not available
+/// not available on macos
 Future<bool> checkPermission() async {
   if (Platform.isIOS || Platform.isAndroid || Platform.isWindows) {
     const Permission permissionMic = Permission.microphone;
@@ -58,9 +58,7 @@ class RecorderPermission extends StatelessWidget {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment
                                 .end, // keep mic button on the right
-                            children: [
-                              RecorderMobileView(),
-                            ],
+                            children: [RecorderMobileView()],
                           )
                         : const RecorderDesktopFrame(),
                   );

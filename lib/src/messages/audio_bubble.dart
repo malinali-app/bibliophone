@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
-import '../../logic.dart';
+import 'package:bernard/src/file/file_status.dart';
+
+import 'package:bernard/src/globals.dart';
 import '../azure_blob/azblob_abstract.dart';
 
 import 'package:flutter/material.dart';
@@ -41,7 +43,7 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
   }
 
   Future<void> upload() async {
-    VocalMessagesConfig.client = http.Client();
+    GlobalConfig.client = http.Client();
     setState(() {
       widget.fileSyncStatus =
           widget.fileSyncStatus.copyWith(uploadStatus: SyncStatus.localSyncing);
@@ -49,16 +51,16 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
     // keep '/' for azure path do not replace with Platform.pathSeparator
     final isUploadOk = await AzureBlobAbstract.uploadAudioWav(
         widget.fileSyncStatus.filePath,
-        VocalMessagesConfig.config.myFilesPath +
+        GlobalConfig.config.myFilesPath +
             '/' +
             widget.fileSyncStatus.filePath.nameOnly,
-        VocalMessagesConfig.client);
+        GlobalConfig.client);
     if (isUploadOk) {
       setState(() {
         widget.fileSyncStatus =
             widget.fileSyncStatus.copyWith(uploadStatus: SyncStatus.synced);
       });
-      VocalMessagesConfig.client.close();
+      GlobalConfig.client.close();
     }
     return;
   }
@@ -74,7 +76,7 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
               PlayerWidget(
                 widget.fileSyncStatus.filePath,
                 widget.fileSyncStatus.dateString,
-                duration:duration,
+                duration: duration,
                 syncStatus: widget.fileSyncStatus.status,
               ),
               syncIcon()
@@ -99,7 +101,7 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
                   widget.fileSyncStatus = widget.fileSyncStatus
                       .copyWith(uploadStatus: SyncStatus.localNotSynced);
                 });
-                VocalMessagesConfig.client.close();
+                GlobalConfig.client.close();
                 return;
               },
               child: const Stack(

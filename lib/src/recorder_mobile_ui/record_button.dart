@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import '../azure_blob/azblob_abstract.dart';
-import '../file_status.dart';
+import '../file/file_status.dart';
 import 'package:path/path.dart' as p;
-import '../file_state.dart';
+import '../file/file_state.dart';
 import '../globals.dart';
 import 'flow_shader.dart';
 import 'lottie_animation.dart';
@@ -86,20 +86,19 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
   void didChangeDependencies() {
     super.didChangeDependencies();
     lockTimerWidth = MediaQuery.of(context).size.width * 0.7;
-    cancelTimerWidth = MediaQuery.of(context).size.width -
-        (6.2 * VocalMessagesConfig.defaultPadding);
+    cancelTimerWidth =
+        MediaQuery.of(context).size.width - (6.2 * GlobalConfig.defaultPadding);
     timerAnimation = Tween<double>(
-            begin: (cancelTimerWidth) + VocalMessagesConfig.defaultPadding,
-            end: 0)
+            begin: (cancelTimerWidth) + GlobalConfig.defaultPadding, end: 0)
         .animate(
       CurvedAnimation(
         parent: controller,
         curve: const Interval(0.2, 1, curve: Curves.easeIn),
       ),
     );
-    lockerAnimation = Tween<double>(
-            begin: lockerHeight + VocalMessagesConfig.defaultPadding, end: 0)
-        .animate(
+    lockerAnimation =
+        Tween<double>(begin: lockerHeight + GlobalConfig.defaultPadding, end: 0)
+            .animate(
       CurvedAnimation(
         parent: controller,
         curve: const Interval(0.2, 1, curve: Curves.easeIn),
@@ -143,7 +142,7 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
         if (kIsWeb) {
           path = '';
         } else {
-          path = p.join(VocalMessagesConfig.myFilesDir.path,
+          path = p.join(GlobalConfig.myFilesDir.path,
               'audio_${DateTime.now().millisecondsSinceEpoch}.wav');
         }
         await _audioRecorder.start(config, path: path);
@@ -243,7 +242,7 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
         height: lockerHeight,
         width: size,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(VocalMessagesConfig.borderRadius),
+          borderRadius: BorderRadius.circular(GlobalConfig.borderRadius),
           color: Colors.green,
         ),
         padding: const EdgeInsets.symmetric(vertical: 15),
@@ -275,7 +274,7 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
         height: size,
         width: cancelTimerWidth,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(VocalMessagesConfig.borderRadius),
+          borderRadius: BorderRadius.circular(GlobalConfig.borderRadius),
           color: Colors.red,
         ),
         child: Padding(
@@ -340,25 +339,25 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
           if (filePath == null) {
             return;
           }
-          VocalMessagesConfig.client = http.Client();
+          GlobalConfig.client = http.Client();
           FileState.allAudioFiles.myFiles
               .add(MyFileStatus(SyncStatus.localSyncing, filePath));
-          VocalMessagesConfig.audioListKey.currentState!
+          GlobalConfig.audioListKey.currentState!
               .insertItem(FileState.allAudioFiles.all.length - 1);
           final dd = await AzureBlobAbstract.uploadAudioWav(
               filePath,
-              VocalMessagesConfig.config.myFilesPath +
+              GlobalConfig.config.myFilesPath +
                   Platform.pathSeparator +
                   filePath.nameOnly,
-              VocalMessagesConfig.client);
+              GlobalConfig.client);
           if (dd == true) {
-            VocalMessagesConfig.client.close();
+            GlobalConfig.client.close();
             final index = FileState.allAudioFiles.myFiles.indexWhere((e) =>
                 e.uploadStatus == SyncStatus.localSyncing &&
                 e.filePath == filePath);
             FileState.allAudioFiles.myFiles[index] =
                 MyFileStatus(SyncStatus.synced, filePath);
-            VocalMessagesConfig.audioListKey.currentState!.setState(() {});
+            GlobalConfig.audioListKey.currentState!.setState(() {});
           }
           debugPrint(filePath);
         },
@@ -479,25 +478,25 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
           if (filePath == null) {
             return;
           }
-          VocalMessagesConfig.client = http.Client();
+          GlobalConfig.client = http.Client();
           FileState.allAudioFiles.myFiles
               .add(MyFileStatus(SyncStatus.localSyncing, filePath));
-          VocalMessagesConfig.audioListKey.currentState!
+          GlobalConfig.audioListKey.currentState!
               .insertItem(FileState.allAudioFiles.all.length - 1);
           final dd = await AzureBlobAbstract.uploadAudioWav(
               filePath,
-              VocalMessagesConfig.config.myFilesPath +
+              GlobalConfig.config.myFilesPath +
                   Platform.pathSeparator +
                   filePath.nameOnly,
-              VocalMessagesConfig.client);
+              GlobalConfig.client);
           if (dd == true) {
-            VocalMessagesConfig.client.close();
+            GlobalConfig.client.close();
             final index = FileState.allAudioFiles.myFiles.indexWhere((e) =>
                 e.uploadStatus == SyncStatus.localSyncing &&
                 e.filePath == filePath);
             FileState.allAudioFiles.myFiles[index] =
                 MyFileStatus(SyncStatus.synced, filePath);
-            VocalMessagesConfig.audioListKey.currentState!.setState(() {});
+            GlobalConfig.audioListKey.currentState!.setState(() {});
           }
           debugPrint(filePath);
         }

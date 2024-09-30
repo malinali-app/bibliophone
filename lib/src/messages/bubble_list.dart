@@ -1,4 +1,4 @@
-import '../file_state.dart';
+import '../file/file_state.dart';
 import '../globals.dart';
 import 'bubble.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +50,7 @@ class BubblesListWidget extends StatelessWidget {
     return AnimatedList(
       initialItemCount: FileState.allAudioFiles.all.length,
       padding: const EdgeInsets.symmetric(vertical: 15),
-      key: VocalMessagesConfig.audioListKey,
+      key: GlobalConfig.audioListKey,
       itemBuilder: (context, index, animation) {
         return FadeTransition(
           opacity: animation,

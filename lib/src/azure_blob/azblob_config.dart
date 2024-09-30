@@ -8,7 +8,7 @@ class AzureBlobConfig {
   factory AzureBlobConfig(
       {required String containerName,
       required String userFolderName,
-      String appName = 'vocal_message'}) {
+      String appName = 'vocal'}) {
     _inst.azureContainerName = containerName;
     _inst.azureUserFolderName = userFolderName;
     return _inst;

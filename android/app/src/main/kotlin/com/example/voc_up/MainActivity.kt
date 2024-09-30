@@ -1,4 +1,4 @@
-package com.example.voc_up
+package com.example.bernard
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,8 +1,8 @@
 import 'dart:io';
+import 'package:bernard/src/globals.dart';
 import 'package:http/http.dart' as http;
-import 'azure_blob/audio_file_parser.dart';
-import 'azure_blob/azblob_abstract.dart';
-import 'globals.dart';
+import '../azure_blob/audio_file_parser.dart';
+import '../azure_blob/azblob_abstract.dart';
 import 'file_status.dart';
 import 'package:flutter/foundation.dart';
 
@@ -22,7 +22,7 @@ Future<List<AzureAudioFileParser>> fetchRemoteAudioFiles(
 
 List<String> getOnlyMyLocalAudioFiles() {
   List<FileSystemEntity> files =
-      VocalMessagesConfig.myFilesDir.listSync(recursive: false);
+      GlobalConfig.myFilesDir.listSync(recursive: false);
   files.removeWhere((element) => !element.path.endsWith("wav"));
   files = files.reversed.toList();
   return files.map((e) => e.path).toList();
@@ -30,16 +30,17 @@ List<String> getOnlyMyLocalAudioFiles() {
 
 List<String> getOnlyTheirLocalAudioFiles() {
   List<FileSystemEntity> files =
-      VocalMessagesConfig.theirFilesDir.listSync(recursive: false);
+      GlobalConfig.theirFilesDir.listSync(recursive: false);
   files.removeWhere((element) => !element.path.endsWith("wav"));
   files = files.reversed.toList();
   return files.map((e) => e.path).toList();
 }
 
-Future<AllFiles> getLocalAudioFetchFilesAndSetStatus(bool isConnected) async {
-  if (isConnected) {
+Future<AllFiles> getLocalAudioFetchFilesAndSetStatus(
+    {required bool isConnected, required isConnexionString}) async {
+  if (isConnected && isConnexionString) {
     final allAudios =
-        await fetchFilesAndSetStatus(VocalMessagesConfig.config.rootPath);
+        await fetchFilesAndSetStatus(GlobalConfig.config.rootPath);
     return allAudios;
   } else {
     return getLocalFilesAndStatusOnly();
@@ -67,8 +68,8 @@ Future<AllFiles> fetchFilesAndSetStatus(String azurePath) async {
   final client = http.Client();
   final myFiles = <MyFileStatus>[];
   final theirFiles = <TheirFileStatus>[];
-  final myRemoteFiles = await fetchRemoteAudioFiles(
-      VocalMessagesConfig.config.myFilesPath, client);
+  final myRemoteFiles =
+      await fetchRemoteAudioFiles(GlobalConfig.config.myFilesPath, client);
 
   print(myRemoteFiles.length);
   for (final remoteFilename in myRemoteFiles.filesNameOnly) {
@@ -96,8 +97,8 @@ Future<AllFiles> fetchFilesAndSetStatus(String azurePath) async {
 
   final theirLocalFiles = getOnlyTheirLocalAudioFiles();
 
-  final theirRemoteFiles = await fetchRemoteAudioFiles(
-      VocalMessagesConfig.config.theirFilesPath, client2);
+  final theirRemoteFiles =
+      await fetchRemoteAudioFiles(GlobalConfig.config.theirFilesPath, client2);
   debugPrint('theirRemoteFiles ${theirRemoteFiles.length}');
   for (final remoteFile in theirRemoteFiles) {
     if (theirLocalFiles.namesOnly.contains(remoteFile.fileName)) {

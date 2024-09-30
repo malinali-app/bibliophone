@@ -16,14 +16,14 @@ abstract class AzureBlobAbstract {
       debugPrint('Azure _connectionString isEmpty');
       return [];
     }
-    print('folderPath $folderPath');
+    debugPrint('folderPath $folderPath');
     final storage = AzureStorage.parse(_connectionString);
 
     try {
       final blobs = await storage.listBlobsRaw(folderPath, client);
       final response = await blobs.stream.bytesToString();
-      print('azure response');
-      print(response); 
+      debugPrint('azure response');
+      debugPrint(response);
       final azureFiles = AzureAudioFileParser.parseXml(response);
       return azureFiles.toList();
     } on AzureStorageException catch (ex) {
@@ -74,7 +74,7 @@ abstract class AzureBlobAbstract {
   }
 
   // TODO downloadText
-    static Future<Uint8List> downloadText(
+  static Future<Uint8List> downloadText(
       String wavFileLink, http.Client client) async {
     final storage = AzureStorage.parse(_connectionString);
 

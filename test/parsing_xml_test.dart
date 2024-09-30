@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import '../lib/src/azure_blob/audio_file_parser.dart';
+import 'package:bernard/src/azure_blob/audio_file_parser.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

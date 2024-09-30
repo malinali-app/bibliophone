@@ -1,4 +1,4 @@
-import '../lib/src/azure_blob/azblob_abstract.dart';
+import 'package:bernard/src/azure_blob/azblob_abstract.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 

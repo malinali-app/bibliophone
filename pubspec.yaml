@@ -1,4 +1,4 @@
-name: voc_up
+name: bernard
 description: Showing how to use vocal_message package
 publish_to: 'none'
 version: 0.1.0
@@ -24,9 +24,10 @@ dependencies:
   just_audio_windows: any
   just_audio_mpv: any
   audioplayers: ^6.1.0
-  # if you do to have XCode 15 stick to audioplayers : 5.2.1
-  # else error: cannot find 'AVURLAssetOverrideMIMETypeKey' in scope
-  
+  # on macos if you do not to have XCode 15 or above pass your way
+  # .pub-cache/hosted/pub.dev/audioplayers_darwin-6.0.0/macos/Classes/WrappedMediaPlayer.swift:185:37: error: cannot find 'AVURLAssetOverrideMIMETypeKey' in scope
+  # macos mic permission might not work anyway..
+
   go_router: ^14.2.8
   font_awesome_flutter: ^10.1.0
   flutter_vibrate: ^1.1.0
@@ -34,6 +35,9 @@ dependencies:
   xml: ^6.2.2
   connectivity_plus: ^6.0.2 #^5.0.2 #4.0.2
   internet_connection_checker: ^1.0.0+1
+  device_info_plus: ^10.1.2
+  package_info_plus: ^8.0.2
+  shared_preferences: ^2.3.2
 
 dev_dependencies:
   flutter_test:

@@ -43,7 +43,6 @@ class _AudioRecorderViewState extends State<AudioRecorderView> {
 
   Future<void> _start() async {
     try {
-      print(await _audioRecorder.hasPermission());
       if (await _audioRecorder.hasPermission()) {
         const encoder = AudioEncoder.wav;
 
@@ -63,7 +62,7 @@ class _AudioRecorderViewState extends State<AudioRecorderView> {
         if (kIsWeb) {
           path = '';
         } else {
-          path = p.join(VocalMessagesConfig.myFilesDir.path,
+          path = p.join(GlobalConfig.myFilesDir.path,
               'audio_${DateTime.now().millisecondsSinceEpoch}.wav');
         }
         await _audioRecorder.start(config, path: path);
