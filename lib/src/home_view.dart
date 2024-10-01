@@ -4,6 +4,7 @@ import 'dart:developer' as developer;
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'record_permission.dart';
 import 'messages/bubble_list.dart';
@@ -123,7 +124,10 @@ class _VocalMessagesAndRecorderViewState
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          IconButton(
+          IconButton(onPressed: () {
+            context.go('/settings');
+          }, icon: const Icon(Icons.settings)),
+/*           IconButton(
             icon: const Icon(Icons.delete_forever),
             onPressed: () async {
               final isSureToDelete = await areYouSure(
@@ -138,7 +142,7 @@ class _VocalMessagesAndRecorderViewState
                 setState(() {});
               }
             },
-          ),
+          ), */
           IconButton(
             icon: isDeviceConnected
                 ? isSyncing

@@ -73,13 +73,19 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const SizedBox(height: 4),
-              PlayerWidget(
-                widget.fileSyncStatus.filePath,
-                widget.fileSyncStatus.dateString,
-                duration: duration,
-                syncStatus: widget.fileSyncStatus.status,
-              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: PlayerWidget(
+                      widget.fileSyncStatus.filePath,
+                      widget.fileSyncStatus.dateString,
+                      duration: duration,
+                      syncStatus: widget.fileSyncStatus.status,
+                    ),
+                  ),
               syncIcon()
+                ],
+              ),
               // not working yet
               // AmplitudeWidget(true, player, widget.filepath),
             ],
@@ -123,9 +129,7 @@ class PlayerWidget extends StatefulWidget {
 
   const PlayerWidget(this.filePath, this.dateString,
       {this.duration, this.syncStatus = SyncStatus.synced, super.key})
-      : assert(syncStatus != SyncStatus.localDefective &&
-            syncStatus != SyncStatus.localNotSynced &&
-            syncStatus != SyncStatus.localSyncing);
+     ;
 
   @override
   State<PlayerWidget> createState() => _AudioBubbleRawWidget();

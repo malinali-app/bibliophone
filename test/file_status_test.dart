@@ -7,7 +7,7 @@ void main() {
     final client = http.Client();
     AzureBlobAbstract.setConnectionString('');
     final files =
-        await AzureBlobAbstract.fetchAudioFilesInfo('/audio-test/test', client);
+        await AzureBlobAbstract.fetchFilesInfo('/audio-test/test', client);
     files.first.path;
   });
 }

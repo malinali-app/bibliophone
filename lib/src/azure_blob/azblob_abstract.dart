@@ -10,7 +10,7 @@ abstract class AzureBlobAbstract {
     _connectionString = val;
   }
 
-  static Future<List<AzureAudioFileParser>> fetchAudioFilesInfo(
+  static Future<List<AzureAudioFileParser>> fetchFilesInfo(
       String folderPath, http.Client client) async {
     if (_connectionString.isEmpty) {
       debugPrint('Azure _connectionString isEmpty');
@@ -22,8 +22,8 @@ abstract class AzureBlobAbstract {
     try {
       final blobs = await storage.listBlobsRaw(folderPath, client);
       final response = await blobs.stream.bytesToString();
-      debugPrint('azure response');
-      debugPrint(response);
+      print('azure response');
+      print(response);
       final azureFiles = AzureAudioFileParser.parseXml(response);
       return azureFiles.toList();
     } on AzureStorageException catch (ex) {
@@ -73,13 +73,13 @@ abstract class AzureBlobAbstract {
     }
   }
 
-  // TODO downloadText
+
   static Future<Uint8List> downloadText(
-      String wavFileLink, http.Client client) async {
+      String fileLink, http.Client client) async {
     final storage = AzureStorage.parse(_connectionString);
 
     try {
-      final streamedResponse = await storage.getBlob(wavFileLink, client);
+      final streamedResponse = await storage.getBlob(fileLink, client);
       //await for await streamedResponse.stream.last
       // final d = await streamedResponse.stream.toBytes();
       // print('d.elementSizeInBytes ${d.elementSizeInBytes}');

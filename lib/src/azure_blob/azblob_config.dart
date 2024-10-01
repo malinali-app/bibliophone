@@ -17,7 +17,7 @@ class AzureBlobConfig {
 // keep '/' for azure path do not replace with Platform.pathSeparator
   String get rootPath => '/' + azureContainerName + '/' + azureUserFolderName;
   String get myFilesPath =>
-      '/' + azureContainerName + '/' + azureUserFolderName + '/userAudio';
+      '/' + azureContainerName + '/' + azureUserFolderName + '/audio';
 
   String get theirFilesPath =>
       '/' + azureContainerName + '/' + azureUserFolderName + '/transcription';

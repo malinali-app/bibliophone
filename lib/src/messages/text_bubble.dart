@@ -1,13 +1,15 @@
 import 'dart:io';
+import 'package:bernard/src/azure_blob/azblob_abstract.dart';
 import 'package:bernard/src/file/file_status.dart';
 import 'package:bernard/src/globals.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class TextBubbleWidget<F extends FileSyncStatus> extends StatefulWidget {
-  F fileSyncStatus;
+class TextBubbleWidget<TheirFileStatus> extends StatefulWidget {
+  TheirFileStatus fileSyncStatus;
   TextBubbleWidget(this.fileSyncStatus, {Key? key}) : super(key: key);
 
   @override
@@ -27,6 +29,8 @@ class _TextBubbleWidgetState extends State<TextBubbleWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final text = File(GlobalConfig.theirFilesDir.path + Platform.pathSeparator + widget.fileSyncStatus.filePath).readAsStringSync();
+    print("text $text");
     final dateString =
         '${widget.fileSyncStatus.dateLastModif.year}/${widget.fileSyncStatus.dateLastModif.month}/${widget.fileSyncStatus.dateLastModif.day} ${widget.fileSyncStatus.dateLastModif.hour}:${widget.fileSyncStatus.dateLastModif.minute}';
     return
@@ -99,7 +103,34 @@ class _TextBubbleWidgetState extends State<TextBubbleWidget> {
                       IconButton(
                         icon: const Icon(Icons.download),
                         onPressed: () async {
-                          try {} on FileSystemException catch (e) {
+                          try {
+ GlobalConfig.client = http.Client();
+    setState(() {
+      widget.fileSyncStatus =
+          widget.fileSyncStatus.copyWith(downloadStatus: SyncStatus.localSyncing);
+    }); 
+    // keep '/' for azure path do not replace with Platform.pathSeparator
+
+final name = (widget.fileSyncStatus.azurePath as String).nameOnly;
+print('name $name');
+final fileLink = GlobalConfig.config.theirFilesPath +
+            '/' +
+            (widget.fileSyncStatus.azurePath as String).nameOnly;
+    final content = await  AzureBlobAbstract.downloadText(
+fileLink,
+        GlobalConfig.client);
+        final filePath = GlobalConfig.theirFilesDir.path + Platform.pathSeparator + name; 
+        final fileSaved = await File(filePath)
+        .writeAsBytes(content);
+      
+      setState(() {
+        widget.fileSyncStatus =
+            widget.fileSyncStatus.copyWith(downloadStatus: SyncStatus.synced);
+      });
+      GlobalConfig.client.close();
+    }
+                            //
+                          on FileSystemException catch (e) {
                             debugPrint('save file exception $e');
                             setState(() {
                               widget.fileSyncStatus =

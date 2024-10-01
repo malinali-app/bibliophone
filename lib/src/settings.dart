@@ -1,6 +1,8 @@
+import 'package:bernard/src/app_launch/e_mat_app.dart';
 import 'package:flutter/material.dart';
 import 'package:bernard/src/globals.dart';
 import 'package:bernard/src/flutter/future_builder2.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsFrameWidget extends StatelessWidget {
@@ -73,41 +75,50 @@ class _SettingsWidgetState extends State<SettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Expanded(
+    return Scaffold(
+      appBar: AppBar(),
+      floatingActionButton: FloatingActionButton(child: const Icon(Icons.save), onPressed: () {
+                              setConnexionString(_connexionController.text);
+                              context.go('/');
+
+      }),
+      body:  SingleChildScrollView(
           child: Column(
-        children: [
-          const RadioListTile(
-            value: CloudProvider.azure,
-            title: Text('Azure'),
-            groupValue: CloudProvider.azure,
-            onChanged: null,
-            controlAffinity: ListTileControlAffinity.platform,
-          ),
-          TextField(
-            scrollPadding: const EdgeInsets.all(20.0),
-            keyboardType: TextInputType.multiline,
-            maxLines: 1,
-            decoration: InputDecoration(
-              labelText: 'connexion',
-              icon: const Icon(Icons.assignment),
-              suffixIcon: IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () {
-                  // delete keyboard not working, providing option
-                  _connexionController.text = '';
-                },
+            children: [
+              const RadioListTile(
+                value: CloudProvider.azure,
+                title: Text('Azure'),
+                groupValue: CloudProvider.azure,
+                onChanged: null,
+                controlAffinity: ListTileControlAffinity.platform,
               ),
-            ),
-            controller: _connexionController,
-            onSubmitted: (value) {
-              if (_connexionController.text.isNotEmpty) {
-                setConnexionString(value);
-              }
-            },
-          )
-        ],
-      )),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  scrollPadding: const EdgeInsets.all(20.0),
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    labelText: 'connexion',
+                    icon: const Icon(Icons.assignment),
+                    suffixIcon: IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        // delete keyboard not working, providing option
+                        _connexionController.text = '';
+                      },
+                    ),
+                  ),
+                  controller: _connexionController,
+                  onSubmitted: (value) {
+                    if (_connexionController.text.isNotEmpty) {
+                      setConnexionString(value);
+                    }
+                  },
+                ),
+              )
+            ],
+          )),
     );
   }
 }

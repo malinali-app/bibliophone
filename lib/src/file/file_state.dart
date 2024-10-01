@@ -14,11 +14,13 @@ class FileState {
   static AllFiles allAudioFiles = AllFiles([], []);
 }
 
-Future<List<AzureAudioFileParser>> fetchRemoteAudioFiles(
+Future<List<AzureAudioFileParser>> fetchRemoteFiles(
     String azurePath, http.Client client) async {
-  final files = await AzureBlobAbstract.fetchAudioFilesInfo(azurePath, client);
+  final files = await AzureBlobAbstract.fetchFilesInfo(azurePath, client);
   return files;
 }
+
+
 
 List<String> getOnlyMyLocalAudioFiles() {
   List<FileSystemEntity> files =
@@ -28,10 +30,10 @@ List<String> getOnlyMyLocalAudioFiles() {
   return files.map((e) => e.path).toList();
 }
 
-List<String> getOnlyTheirLocalAudioFiles() {
+List<String> getOnlyTheirLocalJsonFiles() {
   List<FileSystemEntity> files =
       GlobalConfig.theirFilesDir.listSync(recursive: false);
-  files.removeWhere((element) => !element.path.endsWith("wav"));
+  files.removeWhere((element) => !element.path.endsWith("json"));
   files = files.reversed.toList();
   return files.map((e) => e.path).toList();
 }
@@ -55,7 +57,7 @@ AllFiles getLocalFilesAndStatusOnly() {
     final temp = MyFileStatus(SyncStatus.localNotSynced, file);
     myFiles.add(temp);
   }
-  final theirLocalFiles = getOnlyTheirLocalAudioFiles();
+  final theirLocalFiles = getOnlyTheirLocalJsonFiles();
   for (final filePath in theirLocalFiles) {
     final temp = TheirFileStatus(
         SyncStatus.synced, filePath, File(filePath).lastModifiedSync(), 0);
@@ -69,7 +71,7 @@ Future<AllFiles> fetchFilesAndSetStatus(String azurePath) async {
   final myFiles = <MyFileStatus>[];
   final theirFiles = <TheirFileStatus>[];
   final myRemoteFiles =
-      await fetchRemoteAudioFiles(GlobalConfig.config.myFilesPath, client);
+      await fetchRemoteFiles(GlobalConfig.config.myFilesPath, client);
 
   print(myRemoteFiles.length);
   for (final remoteFilename in myRemoteFiles.filesNameOnly) {
@@ -94,12 +96,11 @@ Future<AllFiles> fetchFilesAndSetStatus(String azurePath) async {
   debugPrint('myFiles ${myFiles.length}');
 
   final client2 = http.Client();
-
-  final theirLocalFiles = getOnlyTheirLocalAudioFiles();
+  final theirLocalFiles = getOnlyTheirLocalJsonFiles();
 
   final theirRemoteFiles =
-      await fetchRemoteAudioFiles(GlobalConfig.config.theirFilesPath, client2);
-  debugPrint('theirRemoteFiles ${theirRemoteFiles.length}');
+      await fetchRemoteFiles(GlobalConfig.config.theirFilesPath, client2);
+  print('theirRemoteFiles ${theirRemoteFiles.length}');
   for (final remoteFile in theirRemoteFiles) {
     if (theirLocalFiles.namesOnly.contains(remoteFile.fileName)) {
       // remote file has already been downloaded from azure
