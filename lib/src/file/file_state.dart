@@ -6,7 +6,7 @@ import '../azure_blob/azblob_abstract.dart';
 import 'file_status.dart';
 import 'package:flutter/foundation.dart';
 
-/// Choosing this method because using proper state management would be an
+/// Choosing this method because using proper state management would be
 /// overkill for the scope of this project.
 class FileState {
   const FileState._();
@@ -20,11 +20,9 @@ Future<List<AzureAudioFileParser>> fetchRemoteFiles(
   return files;
 }
 
-
-
 List<String> getOnlyMyLocalAudioFiles() {
   List<FileSystemEntity> files =
-      GlobalConfig.myFilesDir.listSync(recursive: false);
+      GlobalConfig.localDirMy.listSync(recursive: false);
   files.removeWhere((element) => !element.path.endsWith("wav"));
   files = files.reversed.toList();
   return files.map((e) => e.path).toList();
@@ -32,7 +30,7 @@ List<String> getOnlyMyLocalAudioFiles() {
 
 List<String> getOnlyTheirLocalJsonFiles() {
   List<FileSystemEntity> files =
-      GlobalConfig.theirFilesDir.listSync(recursive: false);
+      GlobalConfig.localDirTheir.listSync(recursive: false);
   files.removeWhere((element) => !element.path.endsWith("json"));
   files = files.reversed.toList();
   return files.map((e) => e.path).toList();
@@ -71,18 +69,11 @@ Future<AllFiles> fetchFilesAndSetStatus(String azurePath) async {
   final myFiles = <MyFileStatus>[];
   final theirFiles = <TheirFileStatus>[];
   final myRemoteFiles =
-      await fetchRemoteFiles(GlobalConfig.config.myFilesPath, client);
+      await fetchRemoteFiles(GlobalConfig.config.cloudPathMy, client);
 
-  print(myRemoteFiles.length);
-  for (final remoteFilename in myRemoteFiles.filesNameOnly) {
-    print('remoteFilename');
-    print(remoteFilename);
-  }
   final myLocalFiles = getOnlyMyLocalAudioFiles();
   for (final localFile in myLocalFiles) {
-    print('localFile in myLocalFiles');
-    print(localFile);
-    print(localFile.nameOnly);
+    //print('localFile in myLocalFiles');
     if (myRemoteFiles.filesNameOnly.contains(localFile.nameOnly)) {
       // local file exists in azure
       final upFile = MyFileStatus(SyncStatus.synced, localFile);
@@ -99,8 +90,8 @@ Future<AllFiles> fetchFilesAndSetStatus(String azurePath) async {
   final theirLocalFiles = getOnlyTheirLocalJsonFiles();
 
   final theirRemoteFiles =
-      await fetchRemoteFiles(GlobalConfig.config.theirFilesPath, client2);
-  print('theirRemoteFiles ${theirRemoteFiles.length}');
+      await fetchRemoteFiles(GlobalConfig.config.cloudPathTheir, client2);
+  //print('theirRemoteFiles ${theirRemoteFiles.length}');
   for (final remoteFile in theirRemoteFiles) {
     if (theirLocalFiles.namesOnly.contains(remoteFile.fileName)) {
       // remote file has already been downloaded from azure

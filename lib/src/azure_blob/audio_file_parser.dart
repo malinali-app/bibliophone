@@ -17,7 +17,7 @@ class AzureAudioFileParser {
   //Content-Encoding />
 //<Content-Language />
 
-// keep / for azure path 
+// keep / for azure path
   const AzureAudioFileParser(this.path, this.creationTime, this.contentLength);
   String get fileName => path.split('/').last;
 
@@ -40,8 +40,9 @@ class AzureAudioFileParser {
       final contentLength =
           int.parse(properties.findElements('Content-Length').first.innerText);
       final type = properties.findElements('Content-Type').first.innerText;
+      print('type for checking if json or text filter needed $type');
       if (path.isNotEmpty) {
-        //if (type.contains('audio')) 
+        //if (type.contains('audio'))
         {
           final fileAzure =
               AzureAudioFileParser(path, tempDateDate, contentLength);

@@ -3,7 +3,7 @@ import 'package:bernard/src/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:bernard/src/settings.dart';
+import 'package:bernard/src/settings_view.dart';
 import 'package:bernard/src/ui/theme.dart';
 import 'package:bernard/src/transcription/transcription.dart';
 
@@ -18,7 +18,7 @@ final GoRouter _router = GoRouter(
         GoRoute(
             path: 'settings',
             builder: (BuildContext context, GoRouterState state) {
-              return const SettingsFrameWidget();
+              return const SettingsView();
             }),
         GoRoute(
           path: 'transcription',

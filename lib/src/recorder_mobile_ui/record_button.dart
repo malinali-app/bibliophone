@@ -142,7 +142,7 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
         if (kIsWeb) {
           path = '';
         } else {
-          path = p.join(GlobalConfig.myFilesDir.path,
+          path = p.join(GlobalConfig.localDirMy.path,
               'audio_${DateTime.now().millisecondsSinceEpoch}.wav');
         }
         await _audioRecorder.start(config, path: path);
@@ -346,7 +346,7 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
               .insertItem(FileState.allAudioFiles.all.length - 1);
           final dd = await AzureBlobAbstract.uploadAudioWav(
               filePath,
-              GlobalConfig.config.myFilesPath +
+              GlobalConfig.config.cloudPathMy +
                   Platform.pathSeparator +
                   filePath.nameOnly,
               GlobalConfig.client);
@@ -485,7 +485,7 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
               .insertItem(FileState.allAudioFiles.all.length - 1);
           final dd = await AzureBlobAbstract.uploadAudioWav(
               filePath,
-              GlobalConfig.config.myFilesPath +
+              GlobalConfig.config.cloudPathMy +
                   Platform.pathSeparator +
                   filePath.nameOnly,
               GlobalConfig.client);

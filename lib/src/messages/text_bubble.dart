@@ -29,10 +29,13 @@ class _TextBubbleWidgetState extends State<TextBubbleWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final text = File(GlobalConfig.theirFilesDir.path + Platform.pathSeparator + widget.fileSyncStatus.filePath).readAsStringSync();
+    final text = File(GlobalConfig.localDirTheir.path +
+            Platform.pathSeparator +
+            (widget.fileSyncStatus as TheirFileStatus).filePath)
+        .readAsStringSync();
     print("text $text");
     final dateString =
-        '${widget.fileSyncStatus.dateLastModif.year}/${widget.fileSyncStatus.dateLastModif.month}/${widget.fileSyncStatus.dateLastModif.day} ${widget.fileSyncStatus.dateLastModif.hour}:${widget.fileSyncStatus.dateLastModif.minute}';
+        '${(widget.fileSyncStatus as TheirFileStatus).dateLastModif.year}/${widget.fileSyncStatus.dateLastModif.month}/${widget.fileSyncStatus.dateLastModif.day} ${widget.fileSyncStatus.dateLastModif.hour}:${widget.fileSyncStatus.dateLastModif.minute}';
     return
         // temp hack for UI mock up
         (2 + 2 == 4)
@@ -104,33 +107,36 @@ class _TextBubbleWidgetState extends State<TextBubbleWidget> {
                         icon: const Icon(Icons.download),
                         onPressed: () async {
                           try {
- GlobalConfig.client = http.Client();
-    setState(() {
-      widget.fileSyncStatus =
-          widget.fileSyncStatus.copyWith(downloadStatus: SyncStatus.localSyncing);
-    }); 
-    // keep '/' for azure path do not replace with Platform.pathSeparator
+                            GlobalConfig.client = http.Client();
+                            setState(() {
+                              widget.fileSyncStatus = (widget.fileSyncStatus
+                                      as TheirFileStatus)
+                                  .copyWith(
+                                      downloadStatus: SyncStatus.localSyncing);
+                            });
 
-final name = (widget.fileSyncStatus.azurePath as String).nameOnly;
-print('name $name');
-final fileLink = GlobalConfig.config.theirFilesPath +
-            '/' +
-            (widget.fileSyncStatus.azurePath as String).nameOnly;
-    final content = await  AzureBlobAbstract.downloadText(
-fileLink,
-        GlobalConfig.client);
-        final filePath = GlobalConfig.theirFilesDir.path + Platform.pathSeparator + name; 
-        final fileSaved = await File(filePath)
-        .writeAsBytes(content);
-      
-      setState(() {
-        widget.fileSyncStatus =
-            widget.fileSyncStatus.copyWith(downloadStatus: SyncStatus.synced);
-      });
-      GlobalConfig.client.close();
-    }
-                            //
-                          on FileSystemException catch (e) {
+// keep '/' for azure path do not replace with Platform.pathSeparator
+                            final name =
+                                ((widget.fileSyncStatus as TheirFileStatus)
+                                        .azurePath)
+                                    .nameOnly;
+                            // print('name $name');
+                            final content =
+                                await AzureBlobAbstract.downloadText(
+                                    ((widget.fileSyncStatus as TheirFileStatus)
+                                        .azurePath),
+                                    GlobalConfig.client);
+                            final filePath = GlobalConfig.localDirTheir.path +
+                                Platform.pathSeparator +
+                                name;
+                            File(filePath).writeAsBytesSync(content);
+                            setState(() {
+                              widget.fileSyncStatus = (widget.fileSyncStatus
+                                      as TheirFileStatus)
+                                  .copyWith(downloadStatus: SyncStatus.synced);
+                            });
+                            GlobalConfig.client.close();
+                          } on FileSystemException catch (e) {
                             debugPrint('save file exception $e');
                             setState(() {
                               widget.fileSyncStatus =

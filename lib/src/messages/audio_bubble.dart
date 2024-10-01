@@ -51,7 +51,7 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
     // keep '/' for azure path do not replace with Platform.pathSeparator
     final isUploadOk = await AzureBlobAbstract.uploadAudioWav(
         widget.fileSyncStatus.filePath,
-        GlobalConfig.config.myFilesPath +
+        GlobalConfig.config.cloudPathMy +
             '/' +
             widget.fileSyncStatus.filePath.nameOnly,
         GlobalConfig.client);
@@ -83,7 +83,7 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
                       syncStatus: widget.fileSyncStatus.status,
                     ),
                   ),
-              syncIcon()
+                  syncIcon()
                 ],
               ),
               // not working yet
@@ -128,8 +128,7 @@ class PlayerWidget extends StatefulWidget {
   final SyncStatus syncStatus;
 
   const PlayerWidget(this.filePath, this.dateString,
-      {this.duration, this.syncStatus = SyncStatus.synced, super.key})
-     ;
+      {this.duration, this.syncStatus = SyncStatus.synced, super.key});
 
   @override
   State<PlayerWidget> createState() => _AudioBubbleRawWidget();

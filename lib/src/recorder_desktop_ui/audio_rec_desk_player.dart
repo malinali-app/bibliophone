@@ -117,7 +117,7 @@ class AudioRecPlayerState extends State<AudioRecPlayer> {
                       }
                       final dd = await AzureBlobAbstract.uploadAudioWav(
                           widget.source,
-                          GlobalConfig.config.myFilesPath +
+                          GlobalConfig.config.cloudPathMy +
                               Platform.pathSeparator +
                               widget.source.nameOnly,
                           GlobalConfig.client);

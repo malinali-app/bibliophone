@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 extension LocalPathDownloadedFile on String {
   String get localPathFull =>
-      GlobalConfig.theirFilesDir.path + Platform.pathSeparator + this;
+      GlobalConfig.localDirTheir.path + Platform.pathSeparator + this;
 }
 
 enum CloudProvider { azure, gcp, aws }
@@ -34,11 +34,11 @@ abstract class GlobalConfig {
 
   static void setDocumentPath(Directory dir) {
     documentPath = dir.path;
-    if (theirFilesDir.existsSync() == false) {
-      Directory(theirFilesDir.path).createSync();
+    if (localDirTheir.existsSync() == false) {
+      Directory(localDirTheir.path).createSync();
     }
-    if (myFilesDir.existsSync() == false) {
-      Directory(myFilesDir.path).createSync();
+    if (localDirMy.existsSync() == false) {
+      Directory(localDirMy.path).createSync();
     }
   }
 
@@ -55,17 +55,17 @@ abstract class GlobalConfig {
     return connexionString;
   }
 
-  static Directory get theirFilesDir => Directory(documentPath +
+  static Directory get localDirTheir => Directory(documentPath +
       Platform.pathSeparator +
       appName +
       '_' +
-      'DO_NOT_DELETE_their');
+      'DO_NOT_DELETE_THEIR');
 
-  static Directory get myFilesDir => Directory(documentPath +
+  static Directory get localDirMy => Directory(documentPath +
       Platform.pathSeparator +
       appName +
       '_' +
-      'DO_NOT_DELETE_my');
+      'DO_NOT_DELETE_MY');
 
   static late AzureBlobConfig _config;
   static set setAzureAudioConfig(AzureBlobConfig cg) => _config = cg;

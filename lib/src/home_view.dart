@@ -1,7 +1,6 @@
 // ignore: file_names
 import 'dart:async';
 import 'dart:developer' as developer;
-import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -78,55 +77,17 @@ class _VocalMessagesAndRecorderViewState
     }
   }
 
-  Future<bool> areYouSure(String title, String message, BuildContext context,
-      {required bool? isDismissible}) async {
-    return await showDialog(
-      context: context,
-      barrierDismissible: isDismissible ?? true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(message),
-          actions: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  child: const Text(
-                    'Annuler',
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                ),
-                TextButton(
-                  child: const Text('OK', overflow: TextOverflow.ellipsis),
-                  style: ButtonStyle(
-                    foregroundColor:
-                        WidgetStateProperty.all<Color>(Colors.blue),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          IconButton(onPressed: () {
-            context.go('/settings');
-          }, icon: const Icon(Icons.settings)),
+          IconButton(
+              onPressed: () {
+                context.go('/settings');
+              },
+              icon: const Icon(Icons.settings)),
 /*           IconButton(
             icon: const Icon(Icons.delete_forever),
             onPressed: () async {
@@ -185,6 +146,46 @@ class _VocalMessagesAndRecorderViewState
           ],
         ),
       ),
+    );
+  }
+
+  Future<bool> areYouSure(String title, String message, BuildContext context,
+      {required bool? isDismissible}) async {
+    return await showDialog(
+      context: context,
+      barrierDismissible: isDismissible ?? true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  child: const Text(
+                    'Annuler',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: const Text('OK', overflow: TextOverflow.ellipsis),
+                  style: ButtonStyle(
+                    foregroundColor:
+                        WidgetStateProperty.all<Color>(Colors.blue),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
