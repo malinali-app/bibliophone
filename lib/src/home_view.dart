@@ -1,7 +1,6 @@
 // ignore: file_names
 import 'dart:async';
 import 'dart:developer' as developer;
-import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -124,9 +123,11 @@ class _VocalMessagesAndRecorderViewState
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          IconButton(onPressed: () {
-            context.go('/settings');
-          }, icon: const Icon(Icons.settings)),
+          IconButton(
+              onPressed: () {
+                context.go('/settings');
+              },
+              icon: const Icon(Icons.settings)),
 /*           IconButton(
             icon: const Icon(Icons.delete_forever),
             onPressed: () async {
@@ -168,6 +169,8 @@ class _VocalMessagesAndRecorderViewState
         padding: const EdgeInsets.all(GlobalConfig.defaultPadding),
         child: Column(
           children: [
+            if (GlobalConfig.connexionString.isEmpty)
+              const Text('setup connexion string in settings'),
             Expanded(
               child: BubbleList(
                 isDeviceConnected,

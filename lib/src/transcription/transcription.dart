@@ -1,7 +1,10 @@
+import 'package:bernard/src/file/file_status.dart';
+import 'package:bernard/src/player/player.dart';
+import 'package:bernard/src/transcription/find_panel_view.dart';
 import 'package:flutter/material.dart';
 import 'package:re_editor/re_editor.dart';
 import 'package:bernard/src/messages/audio_bubble.dart';
-import 'package:bernard/src/transcription/find_panel_view.dart';
+//import 'package:bernard/src/transcription/find_panel_view.dart';
 
 class TranscriptionView extends StatefulWidget {
   final String audioFilePath;
@@ -27,6 +30,8 @@ class _TranscriptionViewState extends State<TranscriptionView> {
   void initState() {
     super.initState();
     _controller.text = widget.text;
+//    print(widget.audioFilePath);
+    //  print(widget.audioDateString);
   }
 
   @override
@@ -61,8 +66,12 @@ class _TranscriptionViewState extends State<TranscriptionView> {
           if (widget.audioFilePath.isNotEmpty)
             Flexible(
               flex: 2,
-              fit: FlexFit.tight,
-              child: PlayerWidget(widget.audioFilePath, widget.audioDateString),
+              fit: FlexFit.loose,
+              child: PlayerWidget(
+                widget.audioFilePath,
+                widget.audioDateString,
+                syncStatus: SyncStatus.synced,
+              ),
             ),
           Flexible(
             flex: 8,
@@ -83,7 +92,7 @@ class _TranscriptionViewState extends State<TranscriptionView> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.save),
         onPressed: () {
-          // do the syncing saving boogie
+          // TODO: on save do the syncing saving boogie
         },
       ),
     );
