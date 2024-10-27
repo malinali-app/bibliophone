@@ -1,6 +1,5 @@
-__Bibliophone__ users can record audio, store it in azure cloud and interact with it.
-One could use it to build an vocal lingustic corpus
-One could also trigger a transcription model and display the output in the app like below :
+- __Bibliophone__ users can record audio, store it in azure cloud and interact with it.
+- Beyond building vocal corpus, it can be tailored to any AI API to display the output in the app, e.g. for transcription below :
 
 ![](bibliophone.png)
 
