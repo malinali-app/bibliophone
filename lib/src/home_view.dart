@@ -129,6 +129,8 @@ class _VocalMessagesAndRecorderViewState
         padding: const EdgeInsets.all(GlobalConfig.defaultPadding),
         child: Column(
           children: [
+            if (GlobalConfig.connexionString.isEmpty)
+              const Text('setup connexion string in settings'),
             Expanded(
               child: BubbleList(
                 isDeviceConnected,
