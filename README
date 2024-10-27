@@ -1,6 +1,8 @@
-Bibliophone is used to record audio, store it in azure cloud and interact with it.
+__Bibliophone__ users can record audio, store it in azure cloud and interact with it.
 One could use it to build an vocal lingustic corpus
-One could also trigger translation and display the output in the app
+One could also trigger a transcription model and display the output in the app like below :
+
+![](bibliophone.png)
 
 # inspirations
 - [LIG-Aikuma](https://lig-aikuma.imag.fr/index.html) a recording application for language documentation
@@ -11,12 +13,9 @@ One could also trigger translation and display the output in the app
 - allow user to cancel upload
 - audio can be played/recorded when offline
 - handle unsent files and allow user to send them later
-- TODO: allow user to delete uploaded audio
-- TODO: download transcription from azure 
 
 # roadmap
-- Add a demo a backend project to conduct speech-to-text transcription on audio
-- Make it easier for teams can contribute to the same project
+- speech-to-text demo : show how to call [microsoft api](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text) from the app to infer the audio
 
 # set-up  
 - create azure blob
