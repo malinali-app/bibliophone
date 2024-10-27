@@ -4,6 +4,7 @@ import 'package:bernard/src/transcription/find_panel_view.dart';
 import 'package:flutter/material.dart';
 import 'package:re_editor/re_editor.dart';
 import 'package:bernard/src/messages/audio_bubble.dart';
+
 //import 'package:bernard/src/transcription/find_panel_view.dart';
 
 class TranscriptionView extends StatefulWidget {

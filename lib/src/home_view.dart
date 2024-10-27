@@ -88,22 +88,6 @@ class _VocalMessagesAndRecorderViewState
                 context.go('/settings');
               },
               icon: const Icon(Icons.settings)),
-/*           IconButton(
-            icon: const Icon(Icons.delete_forever),
-            onPressed: () async {
-              final isSureToDelete = await areYouSure(
-                  'Attention',
-                  'Cette opération va effacer tous les enregistrements.',
-                  context,
-                  isDismissible: false);
-              if (isSureToDelete) {
-                GlobalConfig.theirFilesDir.deleteSync(recursive: false);
-                GlobalConfig.myFilesDir.deleteSync(recursive: false);
-                Directory(GlobalConfig.documentPath).createSync();
-                setState(() {});
-              }
-            },
-          ), */
           IconButton(
             icon: isDeviceConnected
                 ? isSyncing
