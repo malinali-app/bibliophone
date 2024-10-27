@@ -40,9 +40,11 @@ Upload vocal message for online transcription and summarization
 - UI - use bin animation when deleting from mobile lockTimer
 - UI - display syncing progress
 - UI - while playing display audio waves 
-  - I tried [voice_message_package](https://pub.dev/packages/voice_message_package) but it yielded unsatisfying result
+  - [voice_message_package](https://pub.dev/packages/voice_message_package) yielded unsatisfying result
+    - check : 
     - see in for_later/amplitude.dart
-    - check : https://pub.dev/packages/audio_waveforms
+    - https://pub.dev/packages/audio_waveforms
+    - https://github.com/ryanheise/just_waveform
     - https://pub.dev/packages/flutter_audio_waveforms
 - UI - while recording display audio amplitude using a [gauge chart](https://github.com/GeekyAnts/GaugesFlutter)
 - UX - set a max duration to prevent users from uploading endless empty files
