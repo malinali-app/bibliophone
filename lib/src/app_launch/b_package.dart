@@ -1,10 +1,10 @@
 // set the container used in azure blob and the user folder
-import 'package:bernard/src/globals.dart';
+import 'package:bibliophone/src/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:bernard/src/app_launch/c_device.dart';
+import 'package:bibliophone/src/app_launch/c_device.dart';
 
-import 'package:bernard/src/flutter/future_builder2.dart';
+import 'package:bibliophone/src/flutter/future_builder2.dart';
 
 class PackageInfoWidget extends StatelessWidget {
   const PackageInfoWidget({super.key});

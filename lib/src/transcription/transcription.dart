@@ -1,11 +1,11 @@
-import 'package:bernard/src/file/file_status.dart';
-import 'package:bernard/src/player/player.dart';
-import 'package:bernard/src/transcription/find_panel_view.dart';
+import 'package:bibliophone/src/file/file_status.dart';
+import 'package:bibliophone/src/player/player.dart';
+import 'package:bibliophone/src/transcription/find_panel_view.dart';
 import 'package:flutter/material.dart';
 import 'package:re_editor/re_editor.dart';
-import 'package:bernard/src/messages/audio_bubble.dart';
+import 'package:bibliophone/src/messages/audio_bubble.dart';
 
-//import 'package:bernard/src/transcription/find_panel_view.dart';
+//import 'package:bibliophone/src/transcription/find_panel_view.dart';
 
 class TranscriptionView extends StatefulWidget {
   final String audioFilePath;

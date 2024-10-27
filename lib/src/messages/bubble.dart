@@ -1,6 +1,6 @@
-import 'package:bernard/src/file/file_status.dart';
-import 'package:bernard/src/globals.dart';
-import 'package:bernard/src/messages/audio_bubble.dart';
+import 'package:bibliophone/src/file/file_status.dart';
+import 'package:bibliophone/src/globals.dart';
+import 'package:bibliophone/src/messages/audio_bubble.dart';
 
 import 'package:flutter/material.dart';
 import 'text_bubble.dart';

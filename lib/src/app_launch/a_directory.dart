@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:bernard/src/globals.dart';
+import 'package:bibliophone/src/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:bernard/src/app_launch/b_package.dart';
+import 'package:bibliophone/src/app_launch/b_package.dart';
 
 class AppDocDirectory extends StatelessWidget {
   const AppDocDirectory({super.key});

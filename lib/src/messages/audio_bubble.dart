@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:bernard/src/file/file_status.dart';
+import 'package:bibliophone/src/file/file_status.dart';
 
-import 'package:bernard/src/globals.dart';
-import 'package:bernard/src/player/player.dart';
+import 'package:bibliophone/src/globals.dart';
+import 'package:bibliophone/src/player/player.dart';
 import '../azure_blob/azblob_abstract.dart';
 
 import 'package:flutter/material.dart';

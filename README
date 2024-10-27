@@ -1,4 +1,10 @@
-Upload vocal message for online transcription and summarization
+Bibliophone is used to record audio, store it in azure cloud and interact with it.
+One could use it to build an vocal lingustic corpus
+One could also trigger translation and display the output in the app
+
+# inspirations
+- [LIG-Aikuma](https://lig-aikuma.imag.fr/index.html) a recording application for language documentation
+- [Lingua Libre](https://en.wikipedia.org/wiki/Lingua_Libre) an online collaborative tool to build a  multilingual, audiovisual speech corpus under a free license
 
 # features 
 - record audio and upload it to azure
@@ -9,8 +15,8 @@ Upload vocal message for online transcription and summarization
 - TODO: download transcription from azure 
 
 # roadmap
-- Use github CI + secret
-- Add a backend project to conduct speech-to-text transcription on audio
+- Add a demo a backend project to conduct speech-to-text transcription on audio
+- Make it easier for teams can contribute to the same project
 
 # set-up  
 - create azure blob
@@ -23,9 +29,8 @@ Upload vocal message for online transcription and summarization
 # caveat
 - only compatible with azure yet, but adaptable
 - you will only see a user folder if they have sent at least one audio
-- drag and drop your audio in user folder
+- drag and drop your content/output in user folder
 - user will need to update view to see the ready to download transcription
-- since on android google play will require that you justify why ext. storage is needed, not using it and using two folders for local storage (my, their)
 
 # backlog
 ## support needed

@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:bernard/src/azure_blob/azblob_abstract.dart';
-import 'package:bernard/src/file/file_status.dart';
-import 'package:bernard/src/globals.dart';
+import 'package:bibliophone/src/azure_blob/azblob_abstract.dart';
+import 'package:bibliophone/src/file/file_status.dart';
+import 'package:bibliophone/src/globals.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 

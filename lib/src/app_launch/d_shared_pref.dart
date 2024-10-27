@@ -1,9 +1,9 @@
 // Flutter imports:
 // ignore_for_file: file_names
 import 'package:flutter/material.dart';
-import 'package:bernard/src/globals.dart';
-import 'package:bernard/src/flutter/future_builder2.dart';
-import 'package:bernard/src/app_launch/e_mat_app.dart';
+import 'package:bibliophone/src/globals.dart';
+import 'package:bibliophone/src/flutter/future_builder2.dart';
+import 'package:bibliophone/src/app_launch/e_mat_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsFetchWidget extends StatelessWidget {

@@ -8,10 +8,10 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 // Package imports:
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:bernard/azure_blob2.dart';
-import 'package:bernard/src/globals.dart';
-import 'package:bernard/src/app_launch/d_shared_pref.dart';
-import 'package:bernard/src/flutter/future_builder2.dart';
+import 'package:bibliophone/azure_blob2.dart';
+import 'package:bibliophone/src/globals.dart';
+import 'package:bibliophone/src/app_launch/d_shared_pref.dart';
+import 'package:bibliophone/src/flutter/future_builder2.dart';
 
 class DeviceInfoWidget extends StatelessWidget {
   const DeviceInfoWidget({super.key});

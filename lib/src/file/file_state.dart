@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:bernard/src/globals.dart';
+import 'package:bibliophone/src/globals.dart';
 import 'package:http/http.dart' as http;
 import '../azure_blob/audio_file_parser.dart';
 import '../azure_blob/azblob_abstract.dart';

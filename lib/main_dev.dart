@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bernard/src/globals.dart';
-import 'package:bernard/src/app_launch/a_directory.dart';
-import 'package:bernard/src/flutter/environment.dart';
+import 'package:bibliophone/src/globals.dart';
+import 'package:bibliophone/src/app_launch/a_directory.dart';
+import 'package:bibliophone/src/flutter/environment.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

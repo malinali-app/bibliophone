@@ -1,5 +1,5 @@
-name: bernard
-description: Showing how to use vocal_message package
+name: bibliophone
+description: Record audio send it to your azure cloud and perform
 publish_to: 'none'
 version: 0.1.0
 

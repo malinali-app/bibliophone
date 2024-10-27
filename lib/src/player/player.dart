@@ -1,4 +1,4 @@
-import 'package:bernard/src/file/file_status.dart';
+import 'package:bibliophone/src/file/file_status.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
