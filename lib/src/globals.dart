@@ -21,7 +21,7 @@ abstract class GlobalConfig {
   static void setEnv(Environment _env) => env = _env;
   static String locale = 'fr';
   static String documentPath = '';
-  static String appName = 'bernard';
+  static String appName = 'bibli';
   static CloudProvider cloudProvider = CloudProvider.azure;
   static void setAppName(String _name) => appName = _name;
 
@@ -55,6 +55,7 @@ abstract class GlobalConfig {
     return connexionString;
   }
 
+  @Deprecated('only upload')
   static Directory get localDirTheir => Directory(documentPath +
       Platform.pathSeparator +
       appName +

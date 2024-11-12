@@ -89,7 +89,7 @@ Future<AllFiles> fetchFilesAndSetStatus(String azurePath) async {
   final client2 = http.Client();
   final theirLocalFiles = getOnlyTheirLocalJsonFiles();
 
-  final theirRemoteFiles =
+/*   final theirRemoteFiles =
       await fetchRemoteFiles(GlobalConfig.config.cloudPathTheir, client2);
   //print('theirRemoteFiles ${theirRemoteFiles.length}');
   for (final remoteFile in theirRemoteFiles) {
@@ -113,7 +113,7 @@ Future<AllFiles> fetchFilesAndSetStatus(String azurePath) async {
       );
       theirFiles.add(downFile);
     }
-  }
+  } */
   debugPrint('theirFiles ${theirFiles.length}');
   return AllFiles(myFiles, theirFiles);
 }
