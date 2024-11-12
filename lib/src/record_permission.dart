@@ -23,7 +23,9 @@ Future<bool> checkPermission() async {
 }
 
 class RecorderPermission extends StatelessWidget {
-  const RecorderPermission({Key? key}) : super(key: key);
+  final bool isDeviceConnected;
+  const RecorderPermission(this.isDeviceConnected, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +56,16 @@ class RecorderPermission extends StatelessWidget {
                 : Padding(
                     padding: const EdgeInsets.all(22.0),
                     child: (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
-                        ? const Row(
+                        ? Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment
                                 .end, // keep mic button on the right
-                            children: [RecorderMobileView()],
+                            children: [
+                              RecorderMobileView(
+                                  isDeviceConnected: isDeviceConnected)
+                            ],
                           )
-                        : const RecorderDesktopFrame(),
+                        : RecorderDesktopFrame(isDeviceConnected),
                   );
           }
         });

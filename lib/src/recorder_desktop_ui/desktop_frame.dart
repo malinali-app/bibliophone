@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class RecorderDesktopFrame extends StatefulWidget {
-  const RecorderDesktopFrame({Key? key}) : super(key: key);
+  final bool isDeviceConnected;
+  const RecorderDesktopFrame(this.isDeviceConnected, {Key? key})
+      : super(key: key);
 
   @override
   State<RecorderDesktopFrame> createState() => _RecorderDesktopFrameState();
@@ -36,6 +38,7 @@ class _RecorderDesktopFrameState extends State<RecorderDesktopFrame> {
     return Center(
       child: showPlayer
           ? AudioRecPlayer(
+              isDeviceConnected: widget.isDeviceConnected,
               source: audioPath!,
               onDoneOrDelete: () {
                 setState(() => showPlayer = false);

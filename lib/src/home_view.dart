@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'record_permission.dart';
-import 'messages/bubble_list.dart';
+import 'bubbles/bubble_list.dart';
 import 'file/file_state.dart';
 import 'globals.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +114,8 @@ class _VocalMessagesAndRecorderViewState
         child: Column(
           children: [
             if (GlobalConfig.connexionString.isEmpty)
-              const Text('setup connexion string in settings'),
+              const Text(
+                  'for cloud sync setup azblob connexion string in settings'),
             Expanded(
               child: BubbleList(
                 isDeviceConnected,
@@ -128,7 +129,7 @@ class _VocalMessagesAndRecorderViewState
               height: 8,
             ),
             const SizedBox(height: 12),
-            const RecorderPermission(),
+            RecorderPermission(isDeviceConnected),
           ],
         ),
       ),

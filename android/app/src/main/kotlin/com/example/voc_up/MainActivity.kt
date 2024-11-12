@@ -1,4 +1,4 @@
-package com.example.bernard
+package com.example.bibliophone
 
 import io.flutter.embedding.android.FlutterActivity
 

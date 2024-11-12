@@ -6,10 +6,10 @@ import 'package:bibliophone/azure_blob2.dart';
 import 'package:bibliophone/src/flutter/environment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-extension LocalPathDownloadedFile on String {
+/* extension LocalPathDownloadedFile on String {
   String get localPathFull =>
       GlobalConfig.localDirTheir.path + Platform.pathSeparator + this;
-}
+} */
 
 enum CloudProvider { azure, gcp, aws }
 
@@ -21,7 +21,7 @@ abstract class GlobalConfig {
   static void setEnv(Environment _env) => env = _env;
   static String locale = 'fr';
   static String documentPath = '';
-  static String appName = 'bernard';
+  static String appName = 'bibliophone';
   static CloudProvider cloudProvider = CloudProvider.azure;
   static void setAppName(String _name) => appName = _name;
 
@@ -34,9 +34,9 @@ abstract class GlobalConfig {
 
   static void setDocumentPath(Directory dir) {
     documentPath = dir.path;
-    if (localDirTheir.existsSync() == false) {
-      Directory(localDirTheir.path).createSync();
-    }
+    //if (localDirTheir.existsSync() == false) {
+    //  Directory(localDirTheir.path).createSync();
+    //}
     if (localDirMy.existsSync() == false) {
       Directory(localDirMy.path).createSync();
     }
@@ -55,15 +55,16 @@ abstract class GlobalConfig {
     return connexionString;
   }
 
+  @Deprecated('stick to uploading')
   static Directory get localDirTheir => Directory(documentPath +
       Platform.pathSeparator +
-      appName +
+      appName.toUpperCase() +
       '_' +
       'DO_NOT_DELETE_THEIR');
 
   static Directory get localDirMy => Directory(documentPath +
       Platform.pathSeparator +
-      appName +
+      appName.toUpperCase() +
       '_' +
       'DO_NOT_DELETE_MY');
 

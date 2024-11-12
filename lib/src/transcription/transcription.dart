@@ -3,7 +3,7 @@ import 'package:bibliophone/src/player/player.dart';
 import 'package:bibliophone/src/transcription/find_panel_view.dart';
 import 'package:flutter/material.dart';
 import 'package:re_editor/re_editor.dart';
-import 'package:bibliophone/src/messages/audio_bubble.dart';
+import 'package:bibliophone/src/bubbles/audio_bubble.dart';
 
 //import 'package:bibliophone/src/transcription/find_panel_view.dart';
 
@@ -71,6 +71,7 @@ class _TranscriptionViewState extends State<TranscriptionView> {
               child: PlayerWidget(
                 widget.audioFilePath,
                 widget.audioDateString,
+                widget.text,
                 syncStatus: SyncStatus.synced,
               ),
             ),

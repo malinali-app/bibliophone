@@ -142,6 +142,6 @@ Update below with your own info
 
 - azure file formats : only upload .wav audio file
 - azureFolderFullPath = container + folderPath + direction, ex : 
-	- /bernard/userName/userAudio // where app-user's audios are saved
-	- /bernard/userName/transcription // where admin should save vocal message replies (.wav)
+	- /bibliophone/userName/userAudio // where app-user's audios are saved
+	- /bibliophone/userName/transcription // where admin should save vocal message replies (.wav)
 - tip download azure blob storage GUI : https://azure.microsoft.com/en-us/products/storage/storage-explorer/
