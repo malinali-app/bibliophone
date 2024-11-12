@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 class PlayerWidget extends StatefulWidget {
-  final String filePath, dateString;
+  final String filePath, dateString, name;
   final SyncStatus syncStatus;
 
-  const PlayerWidget(this.filePath, this.dateString,
+  const PlayerWidget(this.filePath, this.dateString, this.name,
       {this.syncStatus = SyncStatus.synced, super.key});
 
   @override
@@ -32,7 +32,7 @@ class _AudioBubbleRawWidget extends State<PlayerWidget> {
       children: [
         const SizedBox(width: 6),
         PlayerIcon(player),
-        PlayerProgressBar(player, widget.dateString, duration)
+        PlayerProgressBar(player, widget.dateString, duration, widget.name)
       ],
     );
   }
@@ -81,9 +81,10 @@ class PlayerIcon extends StatelessWidget {
 
 class PlayerProgressBar extends StatelessWidget {
   final AudioPlayer player;
-  final String dateString;
+  final String dateString, name;
   final Duration? duration;
-  const PlayerProgressBar(this.player, this.dateString, this.duration,
+  const PlayerProgressBar(
+      this.player, this.dateString, this.duration, this.name,
       {super.key});
 
   @override
@@ -102,7 +103,7 @@ class PlayerProgressBar extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     if (duration != null)
                       Text(
@@ -121,6 +122,8 @@ class PlayerProgressBar extends StatelessWidget {
                         color: Colors.grey,
                       ),
                     ),
+                    const SizedBox(width: 10),
+                    Text(name)
                   ],
                 ),
               ],

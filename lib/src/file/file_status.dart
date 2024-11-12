@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import '../globals.dart';
-
 enum SyncStatus {
   remoteNotSynced,
   localNotSynced,
@@ -52,6 +50,9 @@ class MyFileStatus implements FileSyncStatus {
   @override
   DateTime get dateLastModif => File(filePath).lastModifiedSync();
 
+  String get name =>
+      localPath.split(Platform.pathSeparator).last.split('_').first;
+
   @override
   toString() => '$runtimeType, $status, $filePath';
 
@@ -83,14 +84,14 @@ class TheirFileStatus implements FileSyncStatus {
   @override
   DateTime get dateLastModif => (creationTime ?? defaultDate).toLocal();
 
-  String get localPathFull {
+/*   String get localPathFull {
     if (downloadStatus != SyncStatus.synced) {
       return '';
     } else {
       return filePath.nameOnly.localPathFull;
     }
   }
-
+ */
   @override
   String get filePath => azurePath;
 

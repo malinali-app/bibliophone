@@ -5,6 +5,7 @@ import 'package:bibliophone/src/file/file_status.dart';
 
 import 'package:bibliophone/src/globals.dart';
 import 'package:bibliophone/src/player/player.dart';
+import 'package:share_plus/share_plus.dart';
 import '../azure_blob/azblob_abstract.dart';
 
 import 'package:flutter/material.dart';
@@ -80,14 +81,20 @@ class _AudioBubbleWidgetState extends State<AudioBubbleWidget> {
                     child: PlayerWidget(
                       widget.fileSyncStatus.filePath,
                       widget.fileSyncStatus.dateString,
+                      widget.fileSyncStatus.name,
                       syncStatus: widget.fileSyncStatus.status,
                     ),
                   ),
-                  syncIcon()
+                  syncIcon(),
+                  IconButton(
+                      onPressed: () async {
+                        final file = XFile(widget.fileSyncStatus.filePath,
+                            mimeType: 'Audio/x-wav');
+                        await Share.shareXFiles([file]);
+                      },
+                      icon: const Icon(Icons.share))
                 ],
               ),
-              // not working yet
-              // AmplitudeWidget(true, player, widget.filepath),
             ],
           );
   }

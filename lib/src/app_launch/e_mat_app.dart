@@ -12,7 +12,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const VocalMessagesAndRecorderView("Bernard");
+        return const VocalMessagesAndRecorderView("bibliophone");
       },
       routes: <RouteBase>[
         GoRoute(
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         Locale('en'),
         Locale('es'),
       ],
-      title: "Bernard",
+      title: "Bibliophone",
       theme: AudioTheme.dartTheme(),
     );
   }

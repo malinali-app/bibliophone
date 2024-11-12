@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:bibliophone/recorder_ui.dart';
+
 import '../azure_blob/azblob_abstract.dart';
 import '../file/file_status.dart';
 import 'package:path/path.dart' as p;
@@ -16,8 +18,10 @@ import 'package:http/http.dart' as http;
 
 class RecorderMobileView extends StatefulWidget {
   // final AnimationController controller;
+  final bool isDeviceConnected;
   const RecorderMobileView({
     // required this.controller,
+    required this.isDeviceConnected,
     Key? key,
   }) : super(key: key);
 
@@ -316,7 +320,16 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
               children: [
                 _buildDeleteButton(),
                 _buildPauseResumeControl(),
-                _buildUploadButton(),
+/*                           FileState.allAudioFiles.myFiles
+              .add(MyFileStatus(SyncStatus.localSyncing, filePath));
+          GlobalConfig.audioListKey.currentState!
+              .insertItem(FileState.allAudioFiles.all.length - 1); */
+                if (GlobalConfig.connexionString.isEmpty ||
+                    widget.isDeviceConnected == false)
+                  _buildAddOfflineButton(),
+                if (GlobalConfig.connexionString.isNotEmpty &&
+                    widget.isDeviceConnected)
+                  _buildUploadButton(),
               ],
             ),
           ],
@@ -325,9 +338,42 @@ class _RecorderMobileViewState extends State<RecorderMobileView>
     );
   }
 
+  Widget _buildAddOfflineButton() => IconButton(
+      onPressed: () async {
+        setState(() {
+          _recordState == RecordState.stop;
+          isLocked = false;
+        });
+        if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+          Vibrate.feedback(FeedbackType.success);
+        }
+        final filePath = await _stop();
+        if (filePath == null) {
+          return;
+        }
+        // TODO handle title in filename here
+        /* final name = await showAskNameDialog(context);
+        final newSource = widget.source.replaceAll('audio', name);
+        File(widget.source).copySync(newSource);
+        File(widget.source).deleteSync();
+        FileState.allAudioFiles.myFiles
+            .add(MyFileStatus(SyncStatus.localNotSynced, newSource));
+        if (GlobalConfig.audioListKey.currentState != null) {
+          GlobalConfig.audioListKey.currentState!
+              .insertItem(FileState.allAudioFiles.all.length - 1);
+        } */
+
+        FileState.allAudioFiles.myFiles
+            .add(MyFileStatus(SyncStatus.localSyncing, filePath));
+        GlobalConfig.audioListKey.currentState!
+            .insertItem(FileState.allAudioFiles.all.length - 1);
+      },
+      icon: const Icon(Icons.library_add));
+
   Widget _buildUploadButton() => IconButton(
         icon: const Icon(Icons.upload, color: Colors.lightBlueAccent),
         onPressed: () async {
+          // TODO handle title in filename here
           setState(() {
             _recordState == RecordState.stop;
             isLocked = false;

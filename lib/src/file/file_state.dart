@@ -28,13 +28,13 @@ List<String> getOnlyMyLocalAudioFiles() {
   return files.map((e) => e.path).toList();
 }
 
-List<String> getOnlyTheirLocalJsonFiles() {
+/* List<String> getOnlyTheirLocalJsonFiles() {
   List<FileSystemEntity> files =
       GlobalConfig.localDirTheir.listSync(recursive: false);
   files.removeWhere((element) => !element.path.endsWith("json"));
   files = files.reversed.toList();
   return files.map((e) => e.path).toList();
-}
+} */
 
 Future<AllFiles> getLocalAudioFetchFilesAndSetStatus(
     {required bool isConnected, required isConnexionString}) async {
@@ -55,12 +55,12 @@ AllFiles getLocalFilesAndStatusOnly() {
     final temp = MyFileStatus(SyncStatus.localNotSynced, file);
     myFiles.add(temp);
   }
-  final theirLocalFiles = getOnlyTheirLocalJsonFiles();
-  for (final filePath in theirLocalFiles) {
-    final temp = TheirFileStatus(
-        SyncStatus.synced, filePath, File(filePath).lastModifiedSync(), 0);
-    theirFiles.add(temp);
-  }
+//  final theirLocalFiles = getOnlyTheirLocalJsonFiles();
+//  for (final filePath in theirLocalFiles) {
+//    final temp = TheirFileStatus(
+//        SyncStatus.synced, filePath, File(filePath).lastModifiedSync(), 0);
+//    theirFiles.add(temp);
+//  }
   return AllFiles(myFiles, theirFiles);
 }
 
@@ -86,8 +86,8 @@ Future<AllFiles> fetchFilesAndSetStatus(String azurePath) async {
   }
   debugPrint('myFiles ${myFiles.length}');
 
-  final client2 = http.Client();
-  final theirLocalFiles = getOnlyTheirLocalJsonFiles();
+//  final client2 = http.Client();
+//  final theirLocalFiles = getOnlyTheirLocalJsonFiles();
 
 /*   final theirRemoteFiles =
       await fetchRemoteFiles(GlobalConfig.config.cloudPathTheir, client2);

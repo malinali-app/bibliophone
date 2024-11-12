@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:bibliophone/src/audio_name.dart';
+
 import '../file/file_status.dart';
 import '../file/file_state.dart';
 import '../azure_blob/azblob_abstract.dart';
@@ -9,6 +11,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+Future<String> showAskNameDialog(BuildContext context) async {
+  return await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (c) {
+      return const AskName();
+    },
+  );
+}
+
 class AudioRecPlayer extends StatefulWidget {
   /// Path from where to play recorded audio
   final String source;
@@ -16,11 +28,12 @@ class AudioRecPlayer extends StatefulWidget {
   /// Callback when audio file should be removed
   /// Setting this to null hides the delete button
   final VoidCallback onDoneOrDelete;
-
+  final bool isDeviceConnected;
   const AudioRecPlayer({
     Key? key,
     required this.source,
     required this.onDoneOrDelete,
+    required this.isDeviceConnected,
   }) : super(key: key);
 
   @override
@@ -101,42 +114,81 @@ class AudioRecPlayerState extends State<AudioRecPlayer> {
               ],
             ),
             // wrap this in a green circle
-            ClipOval(
-              child: Material(
-                color: Theme.of(context).colorScheme.secondary,
-                child: InkWell(
-                  child: IconButton(
-                    icon: const Icon(Icons.upload, color: Colors.white),
-                    onPressed: () async {
-                      GlobalConfig.client = http.Client();
-                      FileState.allAudioFiles.myFiles.add(
-                          MyFileStatus(SyncStatus.localSyncing, widget.source));
-                      if (GlobalConfig.audioListKey.currentState != null) {
-                        GlobalConfig.audioListKey.currentState!
-                            .insertItem(FileState.allAudioFiles.all.length - 1);
-                      }
-                      final dd = await AzureBlobAbstract.uploadAudioWav(
-                          widget.source,
-                          GlobalConfig.config.cloudPathMy +
-                              Platform.pathSeparator +
-                              widget.source.nameOnly,
-                          GlobalConfig.client);
-                      if (dd == true) {
-                        GlobalConfig.client.close();
-                        final index = FileState.allAudioFiles.myFiles
-                            .indexWhere((e) =>
-                                e.uploadStatus == SyncStatus.localSyncing &&
-                                e.filePath == widget.source);
-                        FileState.allAudioFiles.myFiles[index] =
-                            MyFileStatus(SyncStatus.synced, widget.source);
-                        GlobalConfig.audioListKey.currentState!.setState(() {});
-                      }
-                      debugPrint(widget.source);
-                      widget.onDoneOrDelete();
-                    },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (GlobalConfig.connexionString.isEmpty ||
+                    widget.isDeviceConnected == false)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: IconButton(
+                        onPressed: () async {
+                          final name = await showAskNameDialog(context);
+                          final newSource =
+                              widget.source.replaceAll('audio', name);
+                          File(widget.source).copySync(newSource);
+                          File(widget.source).deleteSync();
+                          FileState.allAudioFiles.myFiles.add(MyFileStatus(
+                              SyncStatus.localNotSynced, newSource));
+                          if (GlobalConfig.audioListKey.currentState != null) {
+                            GlobalConfig.audioListKey.currentState!.insertItem(
+                                FileState.allAudioFiles.all.length - 1);
+                          }
+                          widget.onDoneOrDelete();
+                        },
+                        icon: const Icon(Icons.library_add)),
                   ),
-                ),
-              ),
+                if (GlobalConfig.connexionString.isNotEmpty &&
+                    widget.isDeviceConnected)
+                  ClipOval(
+                    child: Material(
+                      color: Theme.of(context).colorScheme.secondary,
+                      child: InkWell(
+                        child: IconButton(
+                          icon: const Icon(Icons.upload, color: Colors.white),
+                          onPressed: () async {
+                            final name = await showAskNameDialog(context);
+                            final newSource =
+                                widget.source.replaceAll('audio', name);
+                            File(widget.source).copySync(newSource);
+                            File(widget.source).deleteSync();
+                            FileState.allAudioFiles.myFiles.add(MyFileStatus(
+                                SyncStatus.localNotSynced, newSource));
+
+                            GlobalConfig.client = http.Client();
+
+                            if (GlobalConfig.audioListKey.currentState !=
+                                null) {
+                              GlobalConfig.audioListKey.currentState!
+                                  .insertItem(
+                                      FileState.allAudioFiles.all.length - 1);
+                            }
+                            final dd = await AzureBlobAbstract.uploadAudioWav(
+                                newSource,
+                                GlobalConfig.config.cloudPathMy +
+                                    Platform.pathSeparator +
+                                    newSource.nameOnly,
+                                GlobalConfig.client);
+                            if (dd == true) {
+                              GlobalConfig.client.close();
+                              final index = FileState.allAudioFiles.myFiles
+                                  .indexWhere((e) =>
+                                      e.uploadStatus ==
+                                          SyncStatus.localSyncing &&
+                                      e.filePath == newSource);
+                              FileState.allAudioFiles.myFiles[index] =
+                                  MyFileStatus(SyncStatus.synced, newSource);
+                              GlobalConfig.audioListKey.currentState!
+                                  .setState(() {});
+                            }
+                            debugPrint(newSource);
+                            widget.onDoneOrDelete();
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
             if (_duration != null)
               Text(
